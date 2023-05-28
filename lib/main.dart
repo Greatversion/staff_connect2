@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:staff_connect/login_servics/login_check.dart';
 import 'package:staff_connect/login_servics/login_screen.dart';
 import 'package:staff_connect/mainUI/dashBoard.dart';
+import 'package:staff_connect/mainUI/settings.dart';
 import 'package:staff_connect/onBoardingScreen/introScreen.dart';
 
 import 'onBoardingScreen/onBoardingdata.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
           "dashBoard": (context) => const DashBoard(),
           "onBoarding": (context) => IntroScreen(list,const SignInScreen()),
         },
-        home: const LoginCheck());
+        home: const SettingsPage());
   }
 }
 
