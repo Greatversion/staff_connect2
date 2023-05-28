@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "104767198551",
+    "project_id": "staffconnect-c6d97",
+    "storage_bucket": "staffconnect-c6d97.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:104767198551:android:39ba023d01e182be56da12",
+        "android_client_info": {
+          "package_name": "com.example.staff_connect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "104767198551-ki65mk9oi3aa02k0eimk2qt9eqkt4hu1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDu4Mh32B_3GLF9StACPs2vbYes5ljyvDI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "104767198551-ki65mk9oi3aa02k0eimk2qt9eqkt4hu1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
