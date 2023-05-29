@@ -11,6 +11,7 @@ import 'package:staff_connect/mainUI/notifications.dart';
 import 'package:staff_connect/mainUI/settings.dart';
 import 'package:staff_connect/mainUI/tasksAssigned.dart';
 import 'package:staff_connect/mainUI/userDashboard.dart';
+import 'package:staff_connect/mainUI/userInfo.dart';
 import 'package:staff_connect/utilities/bottomNavigationBar.dart';
 import 'package:staff_connect/utilities/fadeAnimation.dart';
 // import 'package:staff_connect/utilities/bottomNavigationBar.dart';
@@ -90,15 +91,17 @@ class _DashBoardState extends State<DashBoard> {
   Widget build(BuildContext context) {
     List<String> titleList = [
       "User DashBoard",
-      "My Tasks",
-      "Apply for Application",
-      "Settings"
+      "My Tasks 📝",
+      "Apply for Application 🗒️",
+      "Edit Your Profile 👤"
     ];
     final List<Widget> widgetOptions = <Widget>[
       const UserDashBoard(),
       const TasksAssigned(),
-      const LeaveApplication(),
-      const SettingsPage(),
+      // const LeaveApplication(),
+      TableRangeExample(),
+      // const SettingsPage(),
+      const UserInformation(),
     ];
 
     var res = MediaQuery.of(context);
@@ -132,7 +135,10 @@ class _DashBoardState extends State<DashBoard> {
         elevation: 10,
         backgroundColor: const Color(0xFF212B66),
         automaticallyImplyLeading: false,
-        title: Text(titleList[_selectedIndex]),
+        title: Text(
+          titleList[_selectedIndex],
+          style: GoogleFonts.kanit(fontSize: 21),
+        ),
       ),
       body: widgetOptions
           .elementAt(_selectedIndex), // Update the body based on selected index
@@ -143,37 +149,48 @@ class _DashBoardState extends State<DashBoard> {
                 width: res.size.width * 0.7,
                 child: Column(
                   children: [
-                    Column(
-                      children: [
-                        const SizedBox(height: 12),
-                        CircleAvatar(
-                          radius: 65,
-                          backgroundColor: const Color(0xFF212B66),
-                          foregroundImage: downloadUrl != null
-                              ? NetworkImage(downloadUrl!)
-                              : null,
-                          child: IconButton(
-                              splashColor: Colors.black,
-                              color: const Color(0xFF212B66),
-                              onPressed: () {
-                                uploadImageToFirebaseStorage();
-                              },
-                              icon: const Icon(
-                                Icons.add_a_photo,
-                                size: 45,
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            _auth.currentUser!.email!
-                                .replaceFirst('@sconnect.in', '')
-                                .toUpperCase(),
-                            style: GoogleFonts.kanit(
-                                fontSize: 25, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
+                    Stack(alignment: Alignment.topCenter, children: [
+                      Container(
+                        color: const Color(0xFF212B66),
+                        height: 215,
+                        width: res.size.width * 0.7,
+                      ),
+                      Column(
+                        children: [
+                          const SizedBox(height: 12),
+                          CircleAvatar(
+                            radius: 65,
+                            backgroundColor: const Color(0xFF212B66),
+                            foregroundImage: downloadUrl != null
+                                ? NetworkImage(downloadUrl!)
+                                : null,
+                            child: IconButton(
+                                splashColor: Colors.black,
+                                color: const Color(0xFF212B66),
+                                onPressed: () {
+                                  uploadImageToFirebaseStorage();
+                                },
+                                icon: const Icon(
+                                  Icons.add_a_photo,
+                                  size: 45,
+                                )),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                              _auth.currentUser!.email!
+                                  .replaceFirst('@sconnect.in', '')
+                                  .toUpperCase(),
+                              style: GoogleFonts.kanit(
+                                  color: Colors.white,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold)),
+                          // TextButton(
+                          //     onPressed: () {}, child: const Text("Edit")),
+                        ],
+                      ),
+                    ]),
                     const ListTile(
                       title: Text("hello"),
                     ),

@@ -49,8 +49,8 @@ class CustomNavigationBar extends StatelessWidget {
               text: 'Leave Request',
             ),
             GButton(
-              icon: Icons.settings,
-              text: 'Settings',
+              icon: CupertinoIcons.profile_circled,
+              text: 'Profile',
             ),
           ],
           selectedIndex: _selectedIndex,

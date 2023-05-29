@@ -6,7 +6,7 @@ class Notification_Services {
   FirebaseMessaging messages = FirebaseMessaging.instance;
 
   void userRequestAccessPermission() async {
-    NotificationSettings settings = messages.requestPermission(
+    NotificationSettings settings =await messages.requestPermission(
       alert: true,
       announcement: true,
       provisional: true,
@@ -14,7 +14,7 @@ class Notification_Services {
       carPlay: true,
       criticalAlert: true,
       sound: true,
-    ) as NotificationSettings;
+    );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print("USer Granted ");

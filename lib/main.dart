@@ -2,9 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
 import 'package:staff_connect/login_servics/login_check.dart';
+
 import 'package:staff_connect/login_servics/login_screen.dart';
 import 'package:staff_connect/mainUI/dashBoard.dart';
-import 'package:staff_connect/mainUI/settings.dart';
+
 import 'package:staff_connect/onBoardingScreen/introScreen.dart';
 
 import 'onBoardingScreen/onBoardingdata.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
           "dashBoard": (context) => const DashBoard(),
           "onBoarding": (context) => IntroScreen(list,const SignInScreen()),
         },
-        home: const SettingsPage());
+        home: const LoginCheck());
   }
 }
 
