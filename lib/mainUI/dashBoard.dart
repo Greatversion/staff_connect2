@@ -5,13 +5,15 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:image_picker/image_picker.dart';
+
+import 'package:provider/provider.dart';
 import 'package:staff_connect/mainUI/leaveApplication.dart';
 import 'package:staff_connect/mainUI/notifications.dart';
-import 'package:staff_connect/mainUI/settings.dart';
+
 import 'package:staff_connect/mainUI/tasksAssigned.dart';
 import 'package:staff_connect/mainUI/userDashboard.dart';
 import 'package:staff_connect/mainUI/userInfo.dart';
+import 'package:staff_connect/utilities/ReUsable_Functions.dart';
 import 'package:staff_connect/utilities/bottomNavigationBar.dart';
 import 'package:staff_connect/utilities/fadeAnimation.dart';
 // import 'package:staff_connect/utilities/bottomNavigationBar.dart';
@@ -39,40 +41,11 @@ class _DashBoardState extends State<DashBoard> {
   @override
   void initState() {
     super.initState();
-    userEmail = _auth.currentUser!.email!;
-    fetchImageUrl();
-  }
+    UserDataProvider userDataProvider =
+        Provider.of<UserDataProvider>(context, listen: false);
 
-  Future<void> fetchImageUrl() async {
-    final DocumentSnapshot docSnapshot =
-        await userCollection.doc(userEmail).get();
-    if (docSnapshot.exists) {
-      final data = docSnapshot.data() as Map<String, dynamic>;
-      setState(() {
-        downloadUrl = data['photoUrl'];
-      });
-      print(downloadUrl);
-    }
-  }
-
-  Future<void> uploadImageToFirebaseStorage() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? pickedImage =
-        await picker.pickImage(source: ImageSource.gallery);
-    if (pickedImage == null) {
-      return;
-    }
-    fileName = userEmail;
-    imageFile = File(pickedImage.path);
-    await storage.ref(fileName!).putFile(imageFile!);
-    final TaskSnapshot snapshot =
-        await storage.ref(fileName!).putFile(imageFile!);
-    downloadUrl = await snapshot.ref.getDownloadURL();
-    await userCollection.doc(userEmail).set({
-      'email': userEmail,
-      'photoUrl': downloadUrl,
-    });
-    setState(() {});
+    userDataProvider.userEmail = _auth.currentUser!.email!;
+    userDataProvider.fetchImageUrl();
   }
 
   Future<void> signOut() async {
@@ -89,6 +62,8 @@ class _DashBoardState extends State<DashBoard> {
 
   @override
   Widget build(BuildContext context) {
+    UserDataProvider userDataProvider = Provider.of<UserDataProvider>(
+        context); // whole widget rebuilds without listen:false
     List<String> titleList = [
       "User DashBoard",
       "My Tasks 📝",
@@ -158,17 +133,20 @@ class _DashBoardState extends State<DashBoard> {
                       Column(
                         children: [
                           const SizedBox(height: 12),
+
                           CircleAvatar(
                             radius: 65,
                             backgroundColor: const Color(0xFF212B66),
-                            foregroundImage: downloadUrl != null
-                                ? NetworkImage(downloadUrl!)
+                            foregroundImage: userDataProvider.downloadUrl !=
+                                    null
+                                ? NetworkImage(userDataProvider.downloadUrl!)
                                 : null,
                             child: IconButton(
                                 splashColor: Colors.black,
                                 color: const Color(0xFF212B66),
                                 onPressed: () {
-                                  uploadImageToFirebaseStorage();
+                                  userDataProvider
+                                      .uploadImageToFirebaseStorage();
                                 },
                                 icon: const Icon(
                                   Icons.add_a_photo,
