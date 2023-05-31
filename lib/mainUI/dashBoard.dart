@@ -76,7 +76,7 @@ class _DashBoardState extends State<DashBoard> {
       // const LeaveApplication(),
       TableRangeExample(),
       // const SettingsPage(),
-      const UserInformation(),
+       UserInformation(),
     ];
 
     var res = MediaQuery.of(context);

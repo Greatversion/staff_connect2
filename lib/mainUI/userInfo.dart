@@ -1,84 +1,64 @@
-// import 'package:flutter/material.dart';
+import 'package:chips_choice/chips_choice.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:staff_connect/Salary_API/salary_api_integration.dart';
+import 'package:staff_connect/utilities/drop_down.dart';
 
-// import 'package:provider/provider.dart';
+import '../utilities/ReUsable_Functions.dart';
 
-// import 'package:staff_connect/utilities/ReUsable_Functions.dart';
-// import 'package:staff_connect/utilities/drop_down.dart';
+class UserInformation extends StatefulWidget {
+  const UserInformation({Key? key}) : super(key: key);
 
-// class UserInformation extends StatelessWidget {
-//   const UserInformation({super.key});
+  @override
+  State<UserInformation> createState() => _UserInformationState();
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     TextEditingController _name = TextEditingController();
+class _UserInformationState extends State<UserInformation> {
+  TextEditingController name = TextEditingController();
+  TextEditingController eMail = TextEditingController();
+  TextEditingController bankDetails = TextEditingController();
 
-//     UserDataProvider userDataProvider = Provider.of<UserDataProvider>(context);
-//     List? items = {"ww", "LL"} as List?;
-//     return Scaffold(
-//       body: SingleChildScrollView(
-//         child: Padding(
-//           padding: const EdgeInsets.only(top: 4, left: 10, right: 10),
-//           child: Column(
-//             children: [
-//               Center(
-//                 child: CircleAvatar(
-//                   radius: 35,
-//                   backgroundImage: NetworkImage(userDataProvider.downloadUrl!),
-//                 ),
-//               ),
-//               const SizedBox(height: 5),
-//               // TextInput(name: _name, labelText: "Name"),
-//               const SizedBox(height: 1),
-//               TextInput(name: _name, labelText: "E-Mail"),
-//               const SizedBox(height: 9),
-//               DropDown(items: items!, text: 'Select Department'),
-//               const SizedBox(height: 6),
-//               DropDown(items: items, text: 'Select JobRoles'),
-//               const SizedBox(height: 6),
-//               DropDown(items: items, text: 'Select Posts'),
-//               const SizedBox(height: 6),
-//               DropDown(items: items, text: 'Select Skills')
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    UserDataProvider userDataProvider = Provider.of<UserDataProvider>(context);
+    SelectedItemProvider selectedItemProvider =
+        Provider.of<SelectedItemProvider>(context);
 
-// // ignore: must_be_immutable
-// class TextInput extends StatelessWidget {
-//   TextEditingController name;
-//   String labelText;
-//   TextInput({
-//     Key? key,
-//     required this.name,
-//     required this.labelText,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     TextEditingController name = TextEditingController();
-//     return Padding(
-//       padding: const EdgeInsets.only(top: 10, left: 12, right: 12),
-//       child: TextFormField(
-//         style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-//         controller: name,
-//         decoration: InputDecoration(
-//             contentPadding: const EdgeInsets.all(14),
-//             border: const OutlineInputBorder(
-//                 borderRadius: BorderRadius.all(Radius.circular(32))),
-//             focusedBorder: const OutlineInputBorder(
-//                 borderRadius: BorderRadius.all(Radius.circular(32))),
-//             labelText: labelText,
-//             labelStyle: const TextStyle(color: Color(0xFF212B66))),
-//         validator: (value) {
-//           if (value!.isEmpty) {
-//             return 'Please Enter a $name';
-//           }
-//           return null;
-//         },
-//       ),
-//     );
-//   }
-// }
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 4, left: 10, right: 10),
+          child: Column(
+            children: [
+              Center(
+                child: CircleAvatar(
+                  radius: 35,
+                  backgroundImage: NetworkImage(userDataProvider.downloadUrl!),
+                ),
+              ),
+              const SizedBox(height: 5),
+              TextInput(name: name, labelText: "Name"),
+              const SizedBox(height: 1),
+              TextInput(name: eMail, labelText: "E-Mail"),
+              const SizedBox(height: 1),
+              TextInput(
+                name: bankDetails,
+                labelText: "Bank Account Number",
+              ),
+              const SizedBox(height: 6),
+              DropDown(
+                itemList: getConstantForAppDept(),
+              ),
+              const SizedBox(height: 6),
+              DropDown(
+                itemList: getConstantForAppJobRole(
+                    selectedItemProvider.selectedItem!),
+              ),
+              const SizedBox(height: 6),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -6,8 +6,6 @@ import 'package:staff_connect/login_servics/login_check.dart';
 
 import 'package:staff_connect/login_servics/login_screen.dart';
 import 'package:staff_connect/mainUI/dashBoard.dart';
-import 'package:staff_connect/mainUI/userDashboard.dart';
-import 'package:staff_connect/mainUI/userInfo.dart';
 
 import 'package:staff_connect/onBoardingScreen/introScreen.dart';
 
@@ -30,9 +28,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => UserDataProvider(),
-        )
+        ChangeNotifierProvider(create: (context) => UserDataProvider()),
+        ChangeNotifierProvider(create: (context) => SelectedItemProvider()),
+        ChangeNotifierProvider(create: (context) => LeaveProvider()),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -43,7 +41,7 @@ class MyApp extends StatelessWidget {
             "dashBoard": (context) => const DashBoard(),
             "onBoarding": (context) => IntroScreen(list, const SignInScreen()),
           },
-          home: const DashBoard()),
+          home: const LoginCheck()),
     );
   }
 }
@@ -53,28 +51,24 @@ final List<OnbordingData> list = [
     color: Colors.indigo,
     imagePath: "assets/4.png",
     title: "Search",
-    desc:
-        "Discover restaurants by type of meal, See menus and photos for nearby restaurants and bookmark your favorite places on the go",
+    desc: "dfbhhtbrtsntrtrhtrhtjntrj",
   ),
   OnbordingData(
     color: Colors.redAccent,
     imagePath: "assets/3.png",
     title: "Order",
-    desc:
-        "Best restaurants delivering to your doorstep, Browse menus and build your order in seconds",
+    desc: "fegrgrgrgrgrgg",
   ),
   OnbordingData(
     color: Colors.brown,
     imagePath: "assets/2.png",
     title: "Eat",
-    desc:
-        "Explore curated lists of top restaurants, cafes, pubs, and bars in Mumbai, based on trends.",
+    desc: "fegrgrgrgrgrgg.",
   ),
   OnbordingData(
     color: Colors.green,
     imagePath: "assets/5.png",
     title: "Eat",
-    desc:
-        "Explore curated lists of top restaurants, cafes, pubs, and bars in Mumbai, based on trends.",
+    desc: "fegrgrgrgrgrggbasete.",
   )
 ];

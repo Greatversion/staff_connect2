@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import 'Get_Constants_Model.dart';
 import 'package:http/http.dart' as http;
@@ -50,7 +51,8 @@ Future<List<String?>?> getConstantForAppPost() async {
   return null;
 }
 
-Future<List<String>?> getConstantForAppJobRole(String jobRoleName) async {
+Future<List<String>> getConstantForAppJobRole(String jobRoleName) async {
+  List<String> jobRoleList=[];
   try {
     final response = await http
         .get(Uri.parse('http://salarypredictor.pythonanywhere.com/constants'));
@@ -61,13 +63,9 @@ Future<List<String>?> getConstantForAppJobRole(String jobRoleName) async {
           data['jobroles'][jobRoleName]?.cast<String>();
 
       if (customJobRoles != null) {
-        List<String> jobRoleList = customJobRoles.toList();
+        jobRoleList = customJobRoles.toList();
         // Alternatively, you can use List<String> jobRoleList = List<String>.from(customJobRoles);
-
-        if (kDebugMode) {
-          print(jobRoleList);
-        }
-
+print(jobRoleList);
         return jobRoleList;
       }
     }
@@ -76,8 +74,7 @@ Future<List<String>?> getConstantForAppJobRole(String jobRoleName) async {
       print(e);
     }
   }
-
-  return null;
+  return jobRoleList;
 }
 
 Future<List<String>?> getConstantForAppSkills(
