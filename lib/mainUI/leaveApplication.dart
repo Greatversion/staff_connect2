@@ -45,7 +45,7 @@ class _TableRangeExampleState extends State<TableRangeExample> {
     DateTime adjustedRangeEnd = rangeEnd.add(const Duration(days: 1));
 
     // Calculate the difference in days and add 1 to include both start and end dates
-    int difference = adjustedRangeEnd.difference(adjustedRangeStart).inDays + 1;
+    int difference = adjustedRangeEnd.difference(adjustedRangeStart).inDays;
 
     return Leave(
         numberOfDays: difference,
@@ -68,8 +68,11 @@ class _TableRangeExampleState extends State<TableRangeExample> {
             Expanded(
               child: TableCalendar(
                 calendarStyle: const CalendarStyle(
-                    disabledTextStyle: TextStyle(color: Colors.blue),
-                    weekendTextStyle: TextStyle(color: Colors.red),
+                    defaultTextStyle: TextStyle(fontWeight: FontWeight.bold),
+                    disabledTextStyle: TextStyle(
+                        color: Colors.blue, fontWeight: FontWeight.bold),
+                    weekendTextStyle: TextStyle(
+                        color: Colors.red, fontWeight: FontWeight.bold),
                     todayDecoration: BoxDecoration(
                         color: Color(0xFF212B66),
                         borderRadius: BorderRadius.all(Radius.circular(25)))),
@@ -126,7 +129,7 @@ class _TableRangeExampleState extends State<TableRangeExample> {
             ),
             if (leave != null && leave.numberOfDays > 1)
               Card(
-                shape: StadiumBorder(),
+                shape: const StadiumBorder(),
                 color: const Color(0xFF212B66),
                 margin: const EdgeInsets.all(29),
                 child: Padding(
@@ -146,21 +149,18 @@ class _TableRangeExampleState extends State<TableRangeExample> {
                       Text(
                         'Number of Days: ${leave.numberOfDays}',
                         style: const TextStyle(
-                          color: Colors.white,
-                        ),
+                            color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         'Start Date: ${DateFormat('MMM d, yyyy').format(leave.startDate)}',
                         style: const TextStyle(
-                          color: Colors.white,
-                        ),
+                            color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                       Text(
                         'End Date: ${DateFormat('MMM d, yyyy').format(leave.endDate)}',
                         style: const TextStyle(
-                          color: Colors.white,
-                        ),
+                            color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),

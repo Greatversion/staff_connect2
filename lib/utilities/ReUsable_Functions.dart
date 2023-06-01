@@ -1,9 +1,11 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 
 import 'package:staff_connect/mainUI/leaveApplication.dart';
 
@@ -68,39 +70,39 @@ class LeaveProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
+
 // ignore: must_be_immutable
 class TextInput extends StatelessWidget {
-  TextEditingController name;
+  final FormFieldValidator<String> validator;
+  final TextEditingController controller;
+  final String labelText;
 
-  String labelText;
-  TextInput({
+  const TextInput({
     Key? key,
-    required this.name,
+    required this.validator,
+    required this.controller,
     required this.labelText,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController name = TextEditingController();
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: TextFormField(
         style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-        controller: name,
+        controller: controller,
         decoration: InputDecoration(
-            contentPadding: const EdgeInsets.all(14),
-            border: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(18))),
-            focusedBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(18))),
-            labelText: labelText,
-            labelStyle: const TextStyle(color: Color(0xFF212B66))),
-        validator: (value) {
-          if (value!.isEmpty) {
-            return 'Please Enter a $name';
-          }
-          return null;
-        },
+          contentPadding: const EdgeInsets.all(14),
+          border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(18)),
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(18)),
+          ),
+          labelText: labelText,
+          labelStyle: const TextStyle(color: Color(0xFF212B66)),
+        ),
+        validator: validator,
       ),
     );
   }

@@ -11,11 +11,11 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   bool isShow = true;
   TextEditingController useridController = TextEditingController();
   TextEditingController passController = TextEditingController();
-  GlobalKey<FormState> _formFieldKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formFieldKey = GlobalKey<FormState>();
   // late final FirebaseAuth _auth;
   Future<void> emailSignIn() async {
     _auth
