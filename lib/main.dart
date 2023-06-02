@@ -6,7 +6,6 @@ import 'package:staff_connect/login_servics/login_check.dart';
 
 import 'package:staff_connect/login_servics/login_screen.dart';
 import 'package:staff_connect/mainUI/dashBoard.dart';
-import 'package:staff_connect/mainUI/userInfo.dart';
 
 import 'package:staff_connect/onBoardingScreen/introScreen.dart';
 
@@ -30,11 +29,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UserDataProvider()),
-        ChangeNotifierProvider(create: (context) => SelectedItemProvider()),
         ChangeNotifierProvider(create: (context) => LeaveProvider()),
-        ChangeNotifierProvider(
-          create: (context) => UserInformationProvider(),
-          child: const UserInformation(),
+        ChangeNotifierProvider<UserInformationProvider>(create: (context) => UserInformationProvider()
         ),
       ],
       child: MaterialApp(
@@ -77,6 +73,3 @@ final List<OnbordingData> list = [
     desc: "fegrgrgrgrgrggbasete.",
   )
 ];
-
-
-

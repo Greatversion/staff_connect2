@@ -48,17 +48,9 @@ class UserDataProvider extends ChangeNotifier {
       'email': userEmail,
       'photoUrl': downloadUrl,
     });
-//setState
-    notifyListeners(); // Notify the listeners of the state change
-  }
-}
 
-class SelectedItemProvider extends ChangeNotifier {
-  String? selectedItem;
-
-  void setSelectedItem(String item) {
-    selectedItem = item;
     notifyListeners();
+    // Notify the listeners of the state change
   }
 }
 
@@ -72,14 +64,14 @@ class LeaveProvider extends ChangeNotifier {
 }
 
 class UserInformationProvider with ChangeNotifier {
-  String name = '';
-  String email = '';
-  String bankDetails = '';
-  String phoneNumber = '';
-  String selectedDepartment = 'Business Development';
-  String selectedSkill = 'CEO (Chief Executive Officer)';
-  String selectedPost = 'Entry Level/Junior';
-  String selectedSkillType = 'Technical Skills';
+  String name = 'Not Set';
+  String email = 'Not Set';
+  String bankDetails = 'Not Set';
+  String phoneNumber = 'Not Set';
+  String selectedDepartment = 'Not Set';
+  String selectedSkill = 'Not Set';
+  String selectedPost = 'Not Set';
+  String selectedSkillType = 'Not Set';
 
   void updateName(String value) {
     name = value;
@@ -90,6 +82,8 @@ class UserInformationProvider with ChangeNotifier {
     email = value;
     notifyListeners();
   }
+
+ 
 
   void updateBankDetails(String value) {
     bankDetails = value;
@@ -127,9 +121,9 @@ class TextInput extends StatelessWidget {
   final FormFieldValidator<String> validator;
   final TextEditingController controller;
   final String labelText;
-  Function onChanged;
+  final Function(String) onChanged;
 
-   TextInput({
+  TextInput({
     Key? key,
     required this.validator,
     required this.controller,
@@ -156,6 +150,7 @@ class TextInput extends StatelessWidget {
           labelStyle: const TextStyle(color: Color(0xFF212B66)),
         ),
         validator: validator,
+        onChanged: onChanged,
       ),
     );
   }

@@ -62,19 +62,33 @@ class _TableRangeExampleState extends State<TableRangeExample> {
 
     return Scaffold(
       body: Container(
-        color: const Color(0xE3F6AD37),
+        color: const Color(0xFF212B66),
+
+        ///0xFF212B66
         child: Column(
           children: [
             Expanded(
               child: TableCalendar(
+                headerStyle: const HeaderStyle(
+                    formatButtonTextStyle: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                    titleTextStyle: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold)),
+                daysOfWeekStyle: const DaysOfWeekStyle(
+                  weekdayStyle: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                  weekendStyle:
+                      TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                ),
                 calendarStyle: const CalendarStyle(
-                    defaultTextStyle: TextStyle(fontWeight: FontWeight.bold),
-                    disabledTextStyle: TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.bold),
+                    weekNumberTextStyle: TextStyle(color: Colors.white),
+                    defaultTextStyle: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
+                    disabledTextStyle: TextStyle(color: Colors.yellowAccent),
                     weekendTextStyle: TextStyle(
                         color: Colors.red, fontWeight: FontWeight.bold),
                     todayDecoration: BoxDecoration(
-                        color: Color(0xFF212B66),
+                        color: Color(0xFFFE9F02),
                         borderRadius: BorderRadius.all(Radius.circular(25)))),
                 availableCalendarFormats: const {
                   CalendarFormat.month: 'Month',
@@ -130,7 +144,7 @@ class _TableRangeExampleState extends State<TableRangeExample> {
             if (leave != null && leave.numberOfDays > 1)
               Card(
                 shape: const StadiumBorder(),
-                color: const Color(0xFF212B66),
+                color: const Color(0xFFFE9F02),
                 margin: const EdgeInsets.all(29),
                 child: Padding(
                   padding: const EdgeInsets.all(30),

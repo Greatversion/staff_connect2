@@ -18,7 +18,6 @@ import 'package:staff_connect/utilities/ReUsable_Functions.dart';
 import 'package:staff_connect/utilities/bottomNavigationBar.dart';
 
 import 'package:staff_connect/utilities/fadeAnimation.dart';
-// import 'package:staff_connect/utilities/bottomNavigationBar.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final FirebaseFirestore store = FirebaseFirestore.instance;
@@ -39,10 +38,12 @@ class _DashBoardState extends State<DashBoard> {
   String? fileName;
   File? imageFile;
   int _selectedIndex = 0; // Track the selected index
+  String? currentRegUser = _auth.currentUser!.email;
 
   @override
   void initState() {
     super.initState();
+    fetchData();
     UserDataProvider userDataProvider =
         Provider.of<UserDataProvider>(context, listen: false);
 
@@ -62,10 +63,56 @@ class _DashBoardState extends State<DashBoard> {
     });
   }
 
+  List<String> userinfo = [];
+  Future<void> fetchData() async {
+    userinfo = await getUserFormDataFromFirebaseDataBase();
+    setState(() {});
+  }
+
+  Future<List<String>> getUserFormDataFromFirebaseDataBase() async {
+    final DocumentSnapshot docSnapShot =
+        await userCollection.doc(currentRegUser).get();
+    final data = docSnapShot.data() as Map<String, dynamic>;
+
+    if (docSnapShot.exists) {
+      String nameshow = data['name'];
+      String bankdetailshow = data['BankDetails'];
+      String phoneshow = data['PhoneNumber'];
+      String addresshow = data['Address'];
+      String deptShow = data['Department'];
+      String skillshow = data['Skills'];
+      String skillTypeshow = data['SkillType'];
+      String postshow = data['Post'];
+      userinfo.add(nameshow);
+      userinfo.add(bankdetailshow);
+      userinfo.add(phoneshow);
+      userinfo.add(addresshow);
+      userinfo.add(deptShow);
+      userinfo.add(skillshow);
+      userinfo.add(skillTypeshow);
+      userinfo.add(postshow);
+
+      return userinfo;
+    }
+    return [];
+    //List<String> fieldNames = ['name', 'BankDetails', 'PhoneNumber', 'Address', 'Department', 'Skills', 'SkillType', 'Post'];
+    // for (String fieldName in fieldNames) {
+    //   if (data.containsKey(fieldName)) {
+    //     String fieldValue = data[fieldName].toString();
+    //     userinfo.add(fieldValue);
+    //   } else {
+    //     userinfo.add('');
+    //   }
+    // }
+  }
+
   @override
   Widget build(BuildContext context) {
-    UserDataProvider userDataProvider = Provider.of<UserDataProvider>(
-        context); // whole widget rebuilds without listen:false
+    UserDataProvider userDataProvider = Provider.of<UserDataProvider>(context);
+    UserInformationProvider userInformationProvider =
+        Provider.of<UserInformationProvider>(context);
+
+    // whole widget rebuilds without listen:false
     List<String> titleList = [
       "User DashBoard",
       "My Tasks 📝",
@@ -135,7 +182,6 @@ class _DashBoardState extends State<DashBoard> {
                       Column(
                         children: [
                           const SizedBox(height: 12),
-
                           CircleAvatar(
                             radius: 65,
                             backgroundColor: const Color(0xFF212B66),
@@ -166,35 +212,51 @@ class _DashBoardState extends State<DashBoard> {
                                   color: Colors.white,
                                   fontSize: 25,
                                   fontWeight: FontWeight.bold)),
-                          // TextButton(
-                          //     onPressed: () {}, child: const Text("Edit")),
                         ],
                       ),
                     ]),
-                    const ListTile(
-                      title: Text("hello"),
+                    ListTile(
+                      title: const Text("Employee Name"),
+                      subtitle: Text(userInformationProvider.name),
                     ),
-                    const ListTile(
-                      title: Text("hello"),
+                    ListTile(
+                      title: const Text("Employee Name"),
+                      subtitle: Text(userInformationProvider.name),
                     ),
-                    const ListTile(
-                      title: Text("hello"),
+                    ListTile(
+                      title: const Text("Employee Name"),
+                      subtitle: Text(userInformationProvider.name),
                     ),
-                    const ListTile(
-                      title: Text("hello"),
+                    ListTile(
+                      title: const Text("Employee Name"),
+                      subtitle: Text(userInformationProvider.name),
                     ),
-                    const ListTile(
-                      title: Text("hello"),
+                    ListTile(
+                      title: const Text("Employee Name"),
+                      subtitle: Text(userInformationProvider.name),
                     ),
-                    const ListTile(
-                      title: Text("hello"),
-                    ),
-                    const ListTile(
-                      title: Text("hello"),
-                    ),
-                    const ListTile(
-                      title: Text("hello"),
-                    ),
+
+                    // Expanded(
+                    //   child: ListView.builder(
+                    //       itemCount: userinfo.length,
+                    //       itemBuilder: (context, index) {
+                    //         if (userinfo.isEmpty) {
+                    //           return const Text(
+                    //               "Please Update Your Information in User Profile Section.");
+                    //         }
+
+                    //         return ListTile(
+                    //           title: Text(userinfo[index]),
+                    //         );
+                    //       }),
+                    // ),
+                    // ElevatedButton(
+                    //     onPressed: () {
+                    //       setState(() {
+
+                    //       });
+                    //     },
+                    //     child: Text("eee")),
                   ],
                 ),
               )

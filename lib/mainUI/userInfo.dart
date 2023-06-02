@@ -63,12 +63,18 @@
 // }
 
 // Future<List<String>> item = getConstantForAppJobRole('Operations');
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'package:staff_connect/utilities/ReUsable_Functions.dart';
 import 'package:staff_connect/utilities/drop_down.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final FirebaseFirestore store = FirebaseFirestore.instance;
+final CollectionReference userCollection = store.collection("users");
 
 class UserInformation extends StatefulWidget {
   const UserInformation({Key? key}) : super(key: key);
@@ -83,6 +89,7 @@ class _UserInformationState extends State<UserInformation> {
   TextEditingController eMail = TextEditingController();
   TextEditingController bankDetails = TextEditingController();
   TextEditingController phoneNum = TextEditingController();
+  TextEditingController address = TextEditingController();
 
   final List<String> department = [
     "Finance and Accounting",
@@ -187,14 +194,36 @@ class _UserInformationState extends State<UserInformation> {
   String selectedPost = "Entry Level/Junior";
 
   String selectedSkillType = "Technical Skills";
+  String? currentRegUser = _auth.currentUser!.email;
+  sendUserFormDataToFirebaseDataBase() async {
+    String nameValue = name.text;
+    String bankDetailsValue = bankDetails.text;
+    String phoneNumValue = phoneNum.text;
+    String addressValue = address.text;
+    String dept = selectedDepartment;
+    String skill = selectedSkill;
+    String skillType = selectedSkillType;
+    String post = selectedPost;
+    await userCollection.doc(currentRegUser).set({
+      "name": nameValue,
+      "BankDetails": bankDetailsValue,
+      "PhoneNumber": phoneNumValue,
+      "Address": addressValue,
+      "Department": dept,
+      "Skills": skill,
+      "SkillType": skillType,
+      "Post": post
+    }, SetOptions(merge: true));
+  }
 
+ 
   @override
   Widget build(BuildContext context) {
     var res = MediaQuery.of(context);
     UserDataProvider userDataProvider = Provider.of<UserDataProvider>(context);
-    UserInformationProvider userInformationProviderForm =
+    UserInformationProvider userDetailsProvider =
         Provider.of<UserInformationProvider>(context);
-  
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -228,7 +257,7 @@ class _UserInformationState extends State<UserInformation> {
                     )
                   ],
                 ),
-                const SizedBox(height: 18),
+                const SizedBox(height: 10),
                 TextInput(
                   controller: name,
                   labelText: "Name",
@@ -239,7 +268,7 @@ class _UserInformationState extends State<UserInformation> {
                     return null;
                   },
                   onChanged: (value) {
-                    userInformationProviderForm.updateName(value);
+                    userDetailsProvider.updateName(value);
                   },
                 ),
                 const SizedBox(height: 6.0),
@@ -247,13 +276,18 @@ class _UserInformationState extends State<UserInformation> {
                   controller: eMail,
                   labelText: "E-mail",
                   validator: (value) {
-                    if (value!.isEmpty || !value.contains('@')) {
-                      return "Enter Your E-mail";
+                    if (value!.isEmpty) {
+                      return "Enter your Email";
+                    } else if (!value.contains("@")) {
+                      return "missing @";
+                    } else if (!value.contains(".")) {
+                      return "missing .com or .in";
                     }
+
                     return null;
                   },
                   onChanged: (value) {
-                    userInformationProviderForm.updateEmail(value);
+                    userDetailsProvider.updateEmail(value);
                   },
                 ),
                 const SizedBox(height: 6.0),
@@ -267,7 +301,7 @@ class _UserInformationState extends State<UserInformation> {
                     return null;
                   },
                   onChanged: (value) {
-                    userInformationProviderForm.updateBankDetails(value);
+                    userDetailsProvider.updateBankDetails(value);
                   },
                 ),
                 const SizedBox(height: 6.0),
@@ -281,7 +315,20 @@ class _UserInformationState extends State<UserInformation> {
                     return null;
                   },
                   onChanged: (value) {
-                    userInformationProviderForm.updatePhoneNumber(value);
+                    userDetailsProvider.updatePhoneNumber(value);
+                  },
+                ),
+                TextInput(
+                  controller: address,
+                  labelText: "Billing Address",
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Enter Your Complete Address";
+                    }
+                    return null;
+                  },
+                  onChanged: (value) {
+                    userDetailsProvider.updatePhoneNumber(value);
                   },
                 ),
                 const SizedBox(height: 16.0),
@@ -289,13 +336,11 @@ class _UserInformationState extends State<UserInformation> {
                   options: department,
                   selectedOption: selectedDepartment,
                   onOptionChanged: (value) {
+                    userDetailsProvider.updateSelectedDepartment(value);
                     setState(() {
                       selectedDepartment = value;
                       selectedSkill = department_skillMap[value]![0];
                     });
-                  },
-                  onSaved: (value) {
-                    userInformationProviderForm.updateSelectedDepartment(value);
                   },
                 ),
                 const SizedBox(height: 16.0),
@@ -303,12 +348,10 @@ class _UserInformationState extends State<UserInformation> {
                   options: department_skillMap[selectedDepartment]!.toList(),
                   selectedOption: selectedSkill,
                   onOptionChanged: (value) {
+                    userDetailsProvider.updateSelectedSkill(value);
                     setState(() {
                       selectedSkill = value;
                     });
-                  },
-                  onSaved: (value) {
-                    userInformationProviderForm.updateSelectedSkill(value);
                   },
                 ),
                 const SizedBox(height: 16.0),
@@ -316,12 +359,10 @@ class _UserInformationState extends State<UserInformation> {
                   options: skillType,
                   selectedOption: selectedSkillType,
                   onOptionChanged: (value) {
+                    userDetailsProvider.updateSelectedSkillType(value);
                     setState(() {
                       selectedSkillType = value;
                     });
-                  },
-                  onSaved: (value) {
-                    userInformationProviderForm.updateSelectedSkillType(value);
                   },
                 ),
                 const SizedBox(height: 16.0),
@@ -329,33 +370,18 @@ class _UserInformationState extends State<UserInformation> {
                   options: posts,
                   selectedOption: selectedPost,
                   onOptionChanged: (value) {
+                    userDetailsProvider.updateSelectedPost(value);
                     setState(() {
                       selectedPost = value;
                     });
                   },
-                  onSaved: (value) {
-                    userInformationProviderForm.updateSelectedPost(value);
-                  },
                 ),
-                const SizedBox(height: 30.0),
+                const SizedBox(height: 15.0),
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey2.currentState!.validate()) {
-                      // final String userName = userInformationProviderForm.name;
-                      // final String userEmail =
-                      //     userInformationProviderForm.email;
-                      // final String userBankDetails =
-                      //     userInformationProviderForm.bankDetails;
-                      // final String userPhoneNum =
-                      //     userInformationProviderForm.phoneNumber;
-                      // final String selectedDept =
-                      //     userInformationProviderForm.selectedDepartment;
-                      // final String selectedSkillValue =
-                      //     userInformationProviderForm.selectedSkill;
-                      // final String selectedSkillTypeValue =
-                      //     userInformationProviderForm.selectedSkillType;
-                      // final String selectedPostValue =
-                      //     userInformationProviderForm.selectedPost;
+                      sendUserFormDataToFirebaseDataBase();
+                    
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text("Thanks for the Information..")));
                     }

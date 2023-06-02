@@ -1,7 +1,8 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 
+
+// ignore: camel_case_types
 class Notification_Services {
   FirebaseMessaging messages = FirebaseMessaging.instance;
 
