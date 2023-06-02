@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:provider/provider.dart';
-import 'package:staff_connect/Salary_API/salary_api_integration.dart';
+
 import 'package:staff_connect/mainUI/leaveApplication.dart';
 import 'package:staff_connect/mainUI/notifications.dart';
 
@@ -16,7 +16,7 @@ import 'package:staff_connect/mainUI/userDashboard.dart';
 import 'package:staff_connect/mainUI/userInfo.dart';
 import 'package:staff_connect/utilities/ReUsable_Functions.dart';
 import 'package:staff_connect/utilities/bottomNavigationBar.dart';
-import 'package:staff_connect/utilities/drop_down.dart';
+
 import 'package:staff_connect/utilities/fadeAnimation.dart';
 // import 'package:staff_connect/utilities/bottomNavigationBar.dart';
 

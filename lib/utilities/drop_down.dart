@@ -2,16 +2,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// ignore: must_be_immutable
 class CustomDropdown extends StatefulWidget {
   final List<String> options;
   final String selectedOption;
   final Function(String) onOptionChanged;
+  Function onSaved;
 
-  const CustomDropdown({
+   CustomDropdown({
     Key? key,
     required this.options,
     required this.selectedOption,
     required this.onOptionChanged,
+    required this.onSaved,
   }) : super(key: key);
 
   @override

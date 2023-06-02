@@ -6,6 +6,7 @@ import 'package:staff_connect/login_servics/login_check.dart';
 
 import 'package:staff_connect/login_servics/login_screen.dart';
 import 'package:staff_connect/mainUI/dashBoard.dart';
+import 'package:staff_connect/mainUI/userInfo.dart';
 
 import 'package:staff_connect/onBoardingScreen/introScreen.dart';
 
@@ -31,6 +32,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => UserDataProvider()),
         ChangeNotifierProvider(create: (context) => SelectedItemProvider()),
         ChangeNotifierProvider(create: (context) => LeaveProvider()),
+        ChangeNotifierProvider(
+          create: (context) => UserInformationProvider(),
+          child: const UserInformation(),
+        ),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -50,25 +55,28 @@ final List<OnbordingData> list = [
   OnbordingData(
     color: Colors.indigo,
     imagePath: "assets/4.png",
-    title: "Search",
+    title: "etyew",
     desc: "dfbhhtbrtsntrtrhtrhtjntrj",
   ),
   OnbordingData(
     color: Colors.redAccent,
     imagePath: "assets/3.png",
-    title: "Order",
+    title: "445ed",
     desc: "fegrgrgrgrgrgg",
   ),
   OnbordingData(
     color: Colors.brown,
     imagePath: "assets/2.png",
-    title: "Eat",
+    title: "dtuy",
     desc: "fegrgrgrgrgrgg.",
   ),
   OnbordingData(
     color: Colors.green,
     imagePath: "assets/5.png",
-    title: "Eat",
+    title: "E6ebat",
     desc: "fegrgrgrgrgrggbasete.",
   )
 ];
+
+
+

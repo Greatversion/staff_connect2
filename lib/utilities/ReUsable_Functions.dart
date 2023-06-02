@@ -71,17 +71,70 @@ class LeaveProvider extends ChangeNotifier {
   }
 }
 
+class UserInformationProvider with ChangeNotifier {
+  String name = '';
+  String email = '';
+  String bankDetails = '';
+  String phoneNumber = '';
+  String selectedDepartment = 'Business Development';
+  String selectedSkill = 'CEO (Chief Executive Officer)';
+  String selectedPost = 'Entry Level/Junior';
+  String selectedSkillType = 'Technical Skills';
+
+  void updateName(String value) {
+    name = value;
+    notifyListeners();
+  }
+
+  void updateEmail(String value) {
+    email = value;
+    notifyListeners();
+  }
+
+  void updateBankDetails(String value) {
+    bankDetails = value;
+    notifyListeners();
+  }
+
+  void updatePhoneNumber(String value) {
+    phoneNumber = value;
+    notifyListeners();
+  }
+
+  void updateSelectedDepartment(String value) {
+    selectedDepartment = value;
+    notifyListeners();
+  }
+
+  void updateSelectedSkill(String value) {
+    selectedSkill = value;
+    notifyListeners();
+  }
+
+  void updateSelectedPost(String value) {
+    selectedPost = value;
+    notifyListeners();
+  }
+
+  void updateSelectedSkillType(String value) {
+    selectedSkillType = value;
+    notifyListeners();
+  }
+}
+
 // ignore: must_be_immutable
 class TextInput extends StatelessWidget {
   final FormFieldValidator<String> validator;
   final TextEditingController controller;
   final String labelText;
+  Function onChanged;
 
-  const TextInput({
+   TextInput({
     Key? key,
     required this.validator,
     required this.controller,
     required this.labelText,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
@@ -107,4 +160,3 @@ class TextInput extends StatelessWidget {
     );
   }
 }
-

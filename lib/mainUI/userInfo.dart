@@ -66,7 +66,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:staff_connect/Salary_API/salary_api_integration.dart';
+
 import 'package:staff_connect/utilities/ReUsable_Functions.dart';
 import 'package:staff_connect/utilities/drop_down.dart';
 
@@ -192,6 +192,9 @@ class _UserInformationState extends State<UserInformation> {
   Widget build(BuildContext context) {
     var res = MediaQuery.of(context);
     UserDataProvider userDataProvider = Provider.of<UserDataProvider>(context);
+    UserInformationProvider userInformationProviderForm =
+        Provider.of<UserInformationProvider>(context);
+  
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -235,6 +238,9 @@ class _UserInformationState extends State<UserInformation> {
                     }
                     return null;
                   },
+                  onChanged: (value) {
+                    userInformationProviderForm.updateName(value);
+                  },
                 ),
                 const SizedBox(height: 6.0),
                 TextInput(
@@ -245,6 +251,9 @@ class _UserInformationState extends State<UserInformation> {
                       return "Enter Your E-mail";
                     }
                     return null;
+                  },
+                  onChanged: (value) {
+                    userInformationProviderForm.updateEmail(value);
                   },
                 ),
                 const SizedBox(height: 6.0),
@@ -257,6 +266,9 @@ class _UserInformationState extends State<UserInformation> {
                     }
                     return null;
                   },
+                  onChanged: (value) {
+                    userInformationProviderForm.updateBankDetails(value);
+                  },
                 ),
                 const SizedBox(height: 6.0),
                 TextInput(
@@ -268,66 +280,91 @@ class _UserInformationState extends State<UserInformation> {
                     }
                     return null;
                   },
+                  onChanged: (value) {
+                    userInformationProviderForm.updatePhoneNumber(value);
+                  },
                 ),
                 const SizedBox(height: 16.0),
                 CustomDropdown(
-                    options: department,
-                    selectedOption: selectedDepartment,
-                    onOptionChanged: (value) {
-                      setState(() {
-                        selectedDepartment = value;
-                        selectedSkill = department_skillMap[value]![0];
-                      });
-                    }),
+                  options: department,
+                  selectedOption: selectedDepartment,
+                  onOptionChanged: (value) {
+                    setState(() {
+                      selectedDepartment = value;
+                      selectedSkill = department_skillMap[value]![0];
+                    });
+                  },
+                  onSaved: (value) {
+                    userInformationProviderForm.updateSelectedDepartment(value);
+                  },
+                ),
                 const SizedBox(height: 16.0),
                 CustomDropdown(
-                    options: department_skillMap[selectedDepartment]!.toList(),
-                    selectedOption: selectedSkill,
-                    onOptionChanged: (value) {
-                      setState(() {
-                        selectedSkill = value;
-                      });
-                    }),
+                  options: department_skillMap[selectedDepartment]!.toList(),
+                  selectedOption: selectedSkill,
+                  onOptionChanged: (value) {
+                    setState(() {
+                      selectedSkill = value;
+                    });
+                  },
+                  onSaved: (value) {
+                    userInformationProviderForm.updateSelectedSkill(value);
+                  },
+                ),
                 const SizedBox(height: 16.0),
                 CustomDropdown(
-                    options: skillType,
-                    selectedOption: selectedSkillType,
-                    onOptionChanged: (value) {
-                      setState(() {
-                        selectedSkillType = value;
-                      });
-                    }),
+                  options: skillType,
+                  selectedOption: selectedSkillType,
+                  onOptionChanged: (value) {
+                    setState(() {
+                      selectedSkillType = value;
+                    });
+                  },
+                  onSaved: (value) {
+                    userInformationProviderForm.updateSelectedSkillType(value);
+                  },
+                ),
                 const SizedBox(height: 16.0),
                 CustomDropdown(
-                    options: posts,
-                    selectedOption: selectedPost,
-                    onOptionChanged: (value) {
-                      setState(() {
-                        selectedPost = value;
-                      });
-                    }),
+                  options: posts,
+                  selectedOption: selectedPost,
+                  onOptionChanged: (value) {
+                    setState(() {
+                      selectedPost = value;
+                    });
+                  },
+                  onSaved: (value) {
+                    userInformationProviderForm.updateSelectedPost(value);
+                  },
+                ),
                 const SizedBox(height: 30.0),
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey2.currentState!.validate()) {
-//                       final String userName = name.text;
-// final String userEmail = eMail.text;
-// final String userBankDetails = bankDetails.text;
-// final String userPhoneNum = phoneNum.text;
-// final String selectedDept = selectedDepartment;
-// final String selectedSkillValue = selectedSkill;
-// final String selectedSkillTypeValue = selectedSkillType;
-// final String selectedPostValue = selectedPost;
-
+                      // final String userName = userInformationProviderForm.name;
+                      // final String userEmail =
+                      //     userInformationProviderForm.email;
+                      // final String userBankDetails =
+                      //     userInformationProviderForm.bankDetails;
+                      // final String userPhoneNum =
+                      //     userInformationProviderForm.phoneNumber;
+                      // final String selectedDept =
+                      //     userInformationProviderForm.selectedDepartment;
+                      // final String selectedSkillValue =
+                      //     userInformationProviderForm.selectedSkill;
+                      // final String selectedSkillTypeValue =
+                      //     userInformationProviderForm.selectedSkillType;
+                      // final String selectedPostValue =
+                      //     userInformationProviderForm.selectedPost;
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text("Thanks for the Information..")));
                     }
                   },
-                  child: const Text("Submit"),
                   style: ElevatedButton.styleFrom(
                       textStyle: GoogleFonts.kanit(fontSize: 20),
                       shape: const StadiumBorder(),
                       backgroundColor: const Color(0xFFFE9F02)),
+                  child: const Text("Submit"),
                 )
               ],
             ),
