@@ -30,8 +30,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => UserDataProvider()),
         ChangeNotifierProvider(create: (context) => LeaveProvider()),
-        ChangeNotifierProvider<UserInformationProvider>(create: (context) => UserInformationProvider()
-        ),
+       
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,

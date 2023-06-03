@@ -33,6 +33,15 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    passController.dispose();
+    useridController.dispose();
+    
+  }
+
+  @override
   Widget build(BuildContext context) {
     var responsive = MediaQuery.of(context);
     return Scaffold(

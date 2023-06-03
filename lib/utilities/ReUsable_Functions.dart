@@ -14,6 +14,7 @@ final FirebaseFirestore store = FirebaseFirestore.instance;
 final CollectionReference userCollection = store.collection('users');
 final FirebaseStorage storage = FirebaseStorage.instance;
 
+
 class UserDataProvider extends ChangeNotifier {
   late String? userEmail;
   String? downloadUrl;
@@ -52,26 +53,45 @@ class UserDataProvider extends ChangeNotifier {
     notifyListeners();
     // Notify the listeners of the state change
   }
-}
-
-class LeaveProvider extends ChangeNotifier {
-  Leave? leave;
-
-  void setLeave(Leave? newLeave) {
-    leave = newLeave;
-    notifyListeners();
-  }
-}
-
-class UserInformationProvider with ChangeNotifier {
-  String name = 'Not Set';
+ String name = 'Not Set';
   String email = 'Not Set';
   String bankDetails = 'Not Set';
   String phoneNumber = 'Not Set';
+  String address = 'Not Set';
   String selectedDepartment = 'Not Set';
   String selectedSkill = 'Not Set';
   String selectedPost = 'Not Set';
   String selectedSkillType = 'Not Set';
+
+  Future<void> getUserFormDataFromFirebaseDataBase() async {
+    
+    final DocumentSnapshot docSnapShot =
+        await userCollection.doc(userEmail).get();
+    final data = docSnapShot.data() as Map<String, dynamic>;
+
+    if (docSnapShot.exists) {
+      name = data['name'];
+      email = data['email'];
+      bankDetails = data['BankDetails'];
+      phoneNumber = data['PhoneNumber'];
+      address = data['Address'];
+      selectedDepartment = data['Department'];
+      selectedSkill = data['Skills'];
+      selectedSkillType = data['SkillType'];
+      selectedPost = data['Post'];
+    }
+
+    //List<String> fieldNames = ['name', 'BankDetails', 'PhoneNumber', 'Address', 'Department', 'Skills', 'SkillType', 'Post'];
+    // for (String fieldName in fieldNames) {
+    //   if (data.containsKey(fieldName)) {
+    //     String fieldValue = data[fieldName].toString();
+    //     userinfo.add(fieldValue);
+    //   } else {
+    //     userinfo.add('');
+    //   }
+    // }
+    notifyListeners();
+  }
 
   void updateName(String value) {
     name = value;
@@ -83,8 +103,6 @@ class UserInformationProvider with ChangeNotifier {
     notifyListeners();
   }
 
- 
-
   void updateBankDetails(String value) {
     bankDetails = value;
     notifyListeners();
@@ -92,6 +110,11 @@ class UserInformationProvider with ChangeNotifier {
 
   void updatePhoneNumber(String value) {
     phoneNumber = value;
+    notifyListeners();
+  }
+
+  void updateAddress(String value) {
+    address = value;
     notifyListeners();
   }
 
@@ -114,7 +137,21 @@ class UserInformationProvider with ChangeNotifier {
     selectedSkillType = value;
     notifyListeners();
   }
+
+ 
+
+
 }
+
+class LeaveProvider extends ChangeNotifier {
+  Leave? leave;
+
+  void setLeave(Leave? newLeave) {
+    leave = newLeave;
+    notifyListeners();
+  }
+}
+
 
 // ignore: must_be_immutable
 class TextInput extends StatelessWidget {

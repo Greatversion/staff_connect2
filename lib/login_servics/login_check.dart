@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-
 class LoginCheck extends StatefulWidget {
   const LoginCheck({super.key});
 
@@ -34,6 +33,8 @@ class _LoginCheckState extends State<LoginCheck> {
     checkCurrentUser(context);
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
     var responsive = MediaQuery.of(context);
@@ -61,7 +62,6 @@ class _LoginCheckState extends State<LoginCheck> {
                 child: Image.asset("assets/2.png"),
               ),
               const SizedBox(height: 35),
-              
               const SpinKitCircle(color: Colors.white, size: 50),
             ],
           )),

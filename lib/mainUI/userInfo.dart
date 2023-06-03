@@ -89,7 +89,7 @@ class _UserInformationState extends State<UserInformation> {
   TextEditingController eMail = TextEditingController();
   TextEditingController bankDetails = TextEditingController();
   TextEditingController phoneNum = TextEditingController();
-  TextEditingController address = TextEditingController();
+  TextEditingController addressCont = TextEditingController();
 
   final List<String> department = [
     "Finance and Accounting",
@@ -199,7 +199,7 @@ class _UserInformationState extends State<UserInformation> {
     String nameValue = name.text;
     String bankDetailsValue = bankDetails.text;
     String phoneNumValue = phoneNum.text;
-    String addressValue = address.text;
+    String addressValue = addressCont.text;
     String dept = selectedDepartment;
     String skill = selectedSkill;
     String skillType = selectedSkillType;
@@ -216,14 +216,12 @@ class _UserInformationState extends State<UserInformation> {
     }, SetOptions(merge: true));
   }
 
- 
+  
   @override
   Widget build(BuildContext context) {
     var res = MediaQuery.of(context);
     UserDataProvider userDataProvider = Provider.of<UserDataProvider>(context);
-    UserInformationProvider userDetailsProvider =
-        Provider.of<UserInformationProvider>(context);
-
+  
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -268,7 +266,7 @@ class _UserInformationState extends State<UserInformation> {
                     return null;
                   },
                   onChanged: (value) {
-                    userDetailsProvider.updateName(value);
+                    userDataProvider.updateName(value);
                   },
                 ),
                 const SizedBox(height: 6.0),
@@ -287,7 +285,7 @@ class _UserInformationState extends State<UserInformation> {
                     return null;
                   },
                   onChanged: (value) {
-                    userDetailsProvider.updateEmail(value);
+                    userDataProvider.updateEmail(value);
                   },
                 ),
                 const SizedBox(height: 6.0),
@@ -301,7 +299,7 @@ class _UserInformationState extends State<UserInformation> {
                     return null;
                   },
                   onChanged: (value) {
-                    userDetailsProvider.updateBankDetails(value);
+                    userDataProvider.updateBankDetails(value);
                   },
                 ),
                 const SizedBox(height: 6.0),
@@ -315,11 +313,11 @@ class _UserInformationState extends State<UserInformation> {
                     return null;
                   },
                   onChanged: (value) {
-                    userDetailsProvider.updatePhoneNumber(value);
+                    userDataProvider.updatePhoneNumber(value);
                   },
                 ),
                 TextInput(
-                  controller: address,
+                  controller: addressCont,
                   labelText: "Billing Address",
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -328,7 +326,7 @@ class _UserInformationState extends State<UserInformation> {
                     return null;
                   },
                   onChanged: (value) {
-                    userDetailsProvider.updatePhoneNumber(value);
+                    userDataProvider.updateAddress(value);
                   },
                 ),
                 const SizedBox(height: 16.0),
@@ -336,7 +334,7 @@ class _UserInformationState extends State<UserInformation> {
                   options: department,
                   selectedOption: selectedDepartment,
                   onOptionChanged: (value) {
-                    userDetailsProvider.updateSelectedDepartment(value);
+                    userDataProvider.updateSelectedDepartment(value);
                     setState(() {
                       selectedDepartment = value;
                       selectedSkill = department_skillMap[value]![0];
@@ -348,7 +346,7 @@ class _UserInformationState extends State<UserInformation> {
                   options: department_skillMap[selectedDepartment]!.toList(),
                   selectedOption: selectedSkill,
                   onOptionChanged: (value) {
-                    userDetailsProvider.updateSelectedSkill(value);
+                    userDataProvider.updateSelectedSkill(value);
                     setState(() {
                       selectedSkill = value;
                     });
@@ -359,7 +357,7 @@ class _UserInformationState extends State<UserInformation> {
                   options: skillType,
                   selectedOption: selectedSkillType,
                   onOptionChanged: (value) {
-                    userDetailsProvider.updateSelectedSkillType(value);
+                    userDataProvider.updateSelectedSkillType(value);
                     setState(() {
                       selectedSkillType = value;
                     });
@@ -370,7 +368,7 @@ class _UserInformationState extends State<UserInformation> {
                   options: posts,
                   selectedOption: selectedPost,
                   onOptionChanged: (value) {
-                    userDetailsProvider.updateSelectedPost(value);
+                    userDataProvider.updateSelectedPost(value);
                     setState(() {
                       selectedPost = value;
                     });
@@ -381,7 +379,8 @@ class _UserInformationState extends State<UserInformation> {
                   onPressed: () {
                     if (_formKey2.currentState!.validate()) {
                       sendUserFormDataToFirebaseDataBase();
-                    
+                   
+
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text("Thanks for the Information..")));
                     }

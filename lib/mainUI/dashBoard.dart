@@ -43,18 +43,25 @@ class _DashBoardState extends State<DashBoard> {
   @override
   void initState() {
     super.initState();
-    fetchData();
+
     UserDataProvider userDataProvider =
         Provider.of<UserDataProvider>(context, listen: false);
-
     userDataProvider.userEmail = _auth.currentUser!.email!;
     userDataProvider.fetchImageUrl();
+    userDataProvider.getUserFormDataFromFirebaseDataBase();
   }
 
   Future<void> signOut() async {
-    await _auth.signOut();
-    // ignore: use_build_context_synchronously
-    Navigator.popAndPushNamed(context, 'onBoarding');
+    await _auth.signOut().then((value) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Logging out...")));
+          Navigator.popAndPushNamed(context, 'onBoarding');
+  // Update the currentRegUser variable with the latest currentUser email value
+    setState(() {
+      currentRegUser = _auth.currentUser!.email;
+    });
+      
+    });
   }
 
   void _onIndexChanged(int index) {
@@ -63,54 +70,9 @@ class _DashBoardState extends State<DashBoard> {
     });
   }
 
-  List<String> userinfo = [];
-  Future<void> fetchData() async {
-    userinfo = await getUserFormDataFromFirebaseDataBase();
-    setState(() {});
-  }
-
-  Future<List<String>> getUserFormDataFromFirebaseDataBase() async {
-    final DocumentSnapshot docSnapShot =
-        await userCollection.doc(currentRegUser).get();
-    final data = docSnapShot.data() as Map<String, dynamic>;
-
-    if (docSnapShot.exists) {
-      String nameshow = data['name'];
-      String bankdetailshow = data['BankDetails'];
-      String phoneshow = data['PhoneNumber'];
-      String addresshow = data['Address'];
-      String deptShow = data['Department'];
-      String skillshow = data['Skills'];
-      String skillTypeshow = data['SkillType'];
-      String postshow = data['Post'];
-      userinfo.add(nameshow);
-      userinfo.add(bankdetailshow);
-      userinfo.add(phoneshow);
-      userinfo.add(addresshow);
-      userinfo.add(deptShow);
-      userinfo.add(skillshow);
-      userinfo.add(skillTypeshow);
-      userinfo.add(postshow);
-
-      return userinfo;
-    }
-    return [];
-    //List<String> fieldNames = ['name', 'BankDetails', 'PhoneNumber', 'Address', 'Department', 'Skills', 'SkillType', 'Post'];
-    // for (String fieldName in fieldNames) {
-    //   if (data.containsKey(fieldName)) {
-    //     String fieldValue = data[fieldName].toString();
-    //     userinfo.add(fieldValue);
-    //   } else {
-    //     userinfo.add('');
-    //   }
-    // }
-  }
-
   @override
   Widget build(BuildContext context) {
     UserDataProvider userDataProvider = Provider.of<UserDataProvider>(context);
-    UserInformationProvider userInformationProvider =
-        Provider.of<UserInformationProvider>(context);
 
     // whole widget rebuilds without listen:false
     List<String> titleList = [
@@ -191,7 +153,7 @@ class _DashBoardState extends State<DashBoard> {
                                 : null,
                             child: IconButton(
                                 splashColor: Colors.black,
-                                color: const Color(0xFF212B66),
+                                color: Colors.white,
                                 onPressed: () {
                                   userDataProvider
                                       .uploadImageToFirebaseStorage();
@@ -215,48 +177,38 @@ class _DashBoardState extends State<DashBoard> {
                         ],
                       ),
                     ]),
-                    ListTile(
-                      title: const Text("Employee Name"),
-                      subtitle: Text(userInformationProvider.name),
-                    ),
-                    ListTile(
-                      title: const Text("Employee Name"),
-                      subtitle: Text(userInformationProvider.name),
-                    ),
-                    ListTile(
-                      title: const Text("Employee Name"),
-                      subtitle: Text(userInformationProvider.name),
-                    ),
-                    ListTile(
-                      title: const Text("Employee Name"),
-                      subtitle: Text(userInformationProvider.name),
-                    ),
-                    ListTile(
-                      title: const Text("Employee Name"),
-                      subtitle: Text(userInformationProvider.name),
-                    ),
-
-                    // Expanded(
-                    //   child: ListView.builder(
-                    //       itemCount: userinfo.length,
-                    //       itemBuilder: (context, index) {
-                    //         if (userinfo.isEmpty) {
-                    //           return const Text(
-                    //               "Please Update Your Information in User Profile Section.");
-                    //         }
-
-                    //         return ListTile(
-                    //           title: Text(userinfo[index]),
-                    //         );
-                    //       }),
-                    // ),
-                    // ElevatedButton(
-                    //     onPressed: () {
-                    //       setState(() {
-
-                    //       });
-                    //     },
-                    //     child: Text("eee")),
+                    Expanded(
+                      child: ListView(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        children: [
+                          ListTile(
+                              title: const Text("Employee Name :"),
+                              subtitle: Text(userDataProvider.name)),
+                          ListTile(
+                              title: const Text("Designation :"),
+                              subtitle: Text(userDataProvider.selectedSkill)),
+                          ListTile(
+                              title: const Text("Current Position :"),
+                              subtitle: Text(userDataProvider.selectedPost)),
+                          ListTile(
+                              title: const Text("Department :"),
+                              subtitle:
+                                  Text(userDataProvider.selectedDepartment)),
+                          ListTile(
+                              title: const Text("Skills :"),
+                              subtitle:
+                                  Text(userDataProvider.selectedSkillType)),
+                          const Text(" _____________________________________"),
+                          ListTile(
+                              title: const Text("Contact Number :"),
+                              subtitle: Text(userDataProvider.phoneNumber)),
+                          ListTile(
+                              title: const Text("Billing Address :"),
+                              subtitle: Text(userDataProvider.address))
+                        ],
+                      ),
+                    )
                   ],
                 ),
               )
