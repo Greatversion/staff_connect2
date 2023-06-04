@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:intl/intl.dart';
 import 'package:staff_connect/mainUI/leaveApplication.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -14,13 +14,12 @@ final FirebaseFirestore store = FirebaseFirestore.instance;
 final CollectionReference userCollection = store.collection('users');
 final FirebaseStorage storage = FirebaseStorage.instance;
 
-
 class UserDataProvider extends ChangeNotifier {
   late String? userEmail;
   String? downloadUrl;
   String? fileName;
   File? imageFile;
-
+  Leave? leave;
   Future<void> fetchImageUrl() async {
     final DocumentSnapshot docSnapshot =
         await userCollection.doc(userEmail).get();
@@ -53,7 +52,10 @@ class UserDataProvider extends ChangeNotifier {
     notifyListeners();
     // Notify the listeners of the state change
   }
- String name = 'Not Set';
+
+  
+
+  String name = 'Not Set';
   String email = 'Not Set';
   String bankDetails = 'Not Set';
   String phoneNumber = 'Not Set';
@@ -64,7 +66,6 @@ class UserDataProvider extends ChangeNotifier {
   String selectedSkillType = 'Not Set';
 
   Future<void> getUserFormDataFromFirebaseDataBase() async {
-    
     final DocumentSnapshot docSnapShot =
         await userCollection.doc(userEmail).get();
     final data = docSnapShot.data() as Map<String, dynamic>;
@@ -137,10 +138,6 @@ class UserDataProvider extends ChangeNotifier {
     selectedSkillType = value;
     notifyListeners();
   }
-
- 
-
-
 }
 
 class LeaveProvider extends ChangeNotifier {
@@ -151,7 +148,6 @@ class LeaveProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
-
 
 // ignore: must_be_immutable
 class TextInput extends StatelessWidget {

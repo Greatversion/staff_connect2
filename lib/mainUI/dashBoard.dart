@@ -55,12 +55,11 @@ class _DashBoardState extends State<DashBoard> {
     await _auth.signOut().then((value) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("Logging out...")));
-          Navigator.popAndPushNamed(context, 'onBoarding');
-  // Update the currentRegUser variable with the latest currentUser email value
-    setState(() {
-      currentRegUser = _auth.currentUser!.email;
-    });
-      
+      Navigator.popAndPushNamed(context, 'onBoarding');
+      // Update the currentRegUser variable with the latest currentUser email value
+      setState(() {
+        currentRegUser = _auth.currentUser!.email;
+      });
     });
   }
 
@@ -183,29 +182,76 @@ class _DashBoardState extends State<DashBoard> {
                         shrinkWrap: true,
                         children: [
                           ListTile(
-                              title: const Text("Employee Name :"),
-                              subtitle: Text(userDataProvider.name)),
+                              title: const Text(
+                                "Employee Name :",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                userDataProvider.name,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              )),
                           ListTile(
-                              title: const Text("Designation :"),
-                              subtitle: Text(userDataProvider.selectedSkill)),
+                              title: const Text(
+                                "Designation :",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                userDataProvider.selectedSkill,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              )),
                           ListTile(
-                              title: const Text("Current Position :"),
-                              subtitle: Text(userDataProvider.selectedPost)),
+                              title: const Text(
+                                "Current Position :",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                userDataProvider.selectedPost,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              )),
                           ListTile(
-                              title: const Text("Department :"),
-                              subtitle:
-                                  Text(userDataProvider.selectedDepartment)),
+                              title: const Text(
+                                "Department :",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                userDataProvider.selectedDepartment,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              )),
                           ListTile(
-                              title: const Text("Skills :"),
-                              subtitle:
-                                  Text(userDataProvider.selectedSkillType)),
+                              title: const Text(
+                                "Skills :",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                userDataProvider.selectedSkillType,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              )),
                           const Text(" _____________________________________"),
                           ListTile(
-                              title: const Text("Contact Number :"),
-                              subtitle: Text(userDataProvider.phoneNumber)),
+                              title: const Text(
+                                "Contact Number :",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                userDataProvider.phoneNumber,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              )),
                           ListTile(
-                              title: const Text("Billing Address :"),
-                              subtitle: Text(userDataProvider.address))
+                              title: const Text(
+                                "Billing Address :",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                userDataProvider.address,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ))
                         ],
                       ),
                     )

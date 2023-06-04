@@ -52,7 +52,14 @@ class _TableRangeExampleState extends State<TableRangeExample> {
         startDate: adjustedRangeStart,
         endDate: rangeEnd);
   }
-
+sendLeaveRequest() async {
+    await userCollection.doc(userEmail).set({
+      'Start Date':
+          DateFormat('MMM d, yyyy').format(leave!.startDate).toString(),
+      'End Date': DateFormat('MMM d, yyyy').format(leave!.endDate).toString(),
+      'Number of Days': leave!.numberOfDays.toString()
+    }, SetOptions(merge: true));
+  }
   @override
   Widget build(BuildContext context) {
     LeaveProvider leaveProvider = Provider.of<LeaveProvider>(context);
@@ -70,6 +77,10 @@ class _TableRangeExampleState extends State<TableRangeExample> {
             Expanded(
               child: TableCalendar(
                 headerStyle: const HeaderStyle(
+                    leftChevronIcon:
+                        Icon(Icons.chevron_left, color: Colors.white),
+                    rightChevronIcon:
+                        Icon(Icons.chevron_right, color: Colors.white),
                     formatButtonTextStyle: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                     titleTextStyle: TextStyle(
@@ -151,6 +162,9 @@ class _TableRangeExampleState extends State<TableRangeExample> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                       IconButton(onPressed:(){
+                        
+                       }, icon:const Icon(Icons.add_alert_outlined)),
                       const Text(
                         'Last Leave Requested',
                         style: TextStyle(
