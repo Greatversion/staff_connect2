@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
+
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'package:staff_connect/utilities/ReUsable_Functions.dart';
 
-FirebaseAuth _auth = FirebaseAuth.instance;
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class UserDashBoard extends StatefulWidget {
   const UserDashBoard({super.key});
@@ -17,11 +17,25 @@ class UserDashBoard extends StatefulWidget {
 }
 
 class _UserDashBoardState extends State<UserDashBoard> {
+  String? startDate;
   //0xFF212B66
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    UserDataProvider userDataProvider =
+        Provider.of<UserDataProvider>(context, listen: false);
+    userDataProvider.fetchLeaves();
+    userDataProvider.userEmail = _auth.currentUser!.email!;
+  }
+
   @override
   Widget build(BuildContext context) {
     LeaveProvider leaveProvider = Provider.of<LeaveProvider>(context);
+    UserDataProvider userDataProvider = Provider.of<UserDataProvider>(context);
     final leave = leaveProvider.leave;
+
     var res = MediaQuery.of(context);
     List<_SalesData2> weaklydata = [
       _SalesData2('Mon', 32),
@@ -54,13 +68,14 @@ class _UserDashBoardState extends State<UserDashBoard> {
       _SalesData('Nov', 59),
       _SalesData('Dec', 79),
     ];
-    UserDataProvider userDataProvider = Provider.of<UserDataProvider>(context);
+
     return Scaffold(
         body: SingleChildScrollView(
       child: Container(
         color: const Color(0xFF212B66),
         child: Column(
           children: [
+            const SizedBox(height: 1),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -72,10 +87,11 @@ class _UserDashBoardState extends State<UserDashBoard> {
                         "Hey !  ${_auth.currentUser!.email!.replaceFirst('.dev@sconnect.in', '').toUpperCase()}",
                         style: GoogleFonts.kanit(
                             fontSize: 27,
-                            color: Colors.black,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold),
                       ),
-                      const Text("Welcome to Staff Connect")
+                      const Text("Welcome to Staff Connect",
+                          style: TextStyle(color: Colors.white70))
                     ],
                   ),
                   CircleAvatar(
@@ -87,7 +103,7 @@ class _UserDashBoardState extends State<UserDashBoard> {
                 ],
               ),
             ),
-
+            const SizedBox(height: 18),
             Padding(
               padding: const EdgeInsets.all(5.0),
               child: SizedBox(
@@ -100,83 +116,15 @@ class _UserDashBoardState extends State<UserDashBoard> {
                         child: Row(
                           children: [
                             Expanded(
-                              child: Card(
-                                elevation: 15,
-                                shape: const OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                color: Colors.redAccent,
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: Row(children: [
-                                        Text(
-                                          "3/5",
-                                          style: GoogleFonts.kadwa(
-                                              fontSize: 50,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        )
-                                      ]),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Checkbox(
-                                            activeColor: Colors.black,
-                                            value: true,
-                                            onChanged: (value) {}),
-                                        const Text(
-                                          "Ongoing Tasks",
-                                          softWrap: true,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                                child: CustomCard(
+                              rating: '3/5',
+                              unDone: 'Ongoing Tasks',
+                            )),
                             Expanded(
-                              child: Card(
-                                elevation: 15,
-                                shape: const OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                color: Colors.redAccent,
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: Row(children: [
-                                        Text(
-                                          "1/5",
-                                          style: GoogleFonts.kadwa(
-                                              fontSize: 50,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        )
-                                      ]),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Checkbox(
-                                            activeColor: Colors.black,
-                                            value: true,
-                                            onChanged: (value) {}),
-                                        const Text(
-                                          "Upcoming Tasks",
-                                          softWrap: true,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
+                                child: CustomCard(
+                              rating: '1/5',
+                              unDone: 'Upcoming Tasks',
+                            ))
                           ],
                         ),
                       ),
@@ -184,87 +132,15 @@ class _UserDashBoardState extends State<UserDashBoard> {
                         child: Row(
                           children: [
                             Expanded(
-                              child: Card(
-                                elevation: 15,
-                                shape: const OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                color: Colors.redAccent,
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: Row(children: [
-                                        Text(
-                                          "4/5",
-                                          style: GoogleFonts.kadwa(
-                                              fontSize: 50,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        )
-                                      ]),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Checkbox(
-                                            activeColor: Colors.black,
-                                            value: true,
-                                            onChanged: (value) {}),
-                                        const Flexible(
-                                          child: Text(
-                                            "Upcoming Projects",
-                                            softWrap: true,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                                child: CustomCard(
+                              rating: '4/5',
+                              unDone: 'Upcoming Projects',
+                            )),
                             Expanded(
-                              child: Card(
-                                elevation: 15,
-                                shape: const OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                color: Colors.redAccent,
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: Row(children: [
-                                        Text(
-                                          "2/5",
-                                          style: GoogleFonts.kadwa(
-                                              fontSize: 50,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        )
-                                      ]),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Checkbox(
-                                            activeColor: Colors.black,
-                                            value: true,
-                                            onChanged: (value) {}),
-                                        const Flexible(
-                                          child: Text(
-                                            "Completed Tasks",
-                                            softWrap: true,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
+                                child: CustomCard(
+                              rating: '2/5',
+                              unDone: 'Completed Tasks',
+                            ))
                           ],
                         ),
                       )
@@ -274,6 +150,7 @@ class _UserDashBoardState extends State<UserDashBoard> {
               ),
             ),
             // ignore: sized_box_for_whitespace
+            const SizedBox(height: 4),
             Padding(
               padding: const EdgeInsets.all(2.0),
               child: Card(
@@ -288,7 +165,7 @@ class _UserDashBoardState extends State<UserDashBoard> {
                         Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: Text(
-                            "🚫Pending Leaves :",
+                            " 🚫   Pending Leaves : ",
                             style: GoogleFonts.kanit(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -296,12 +173,11 @@ class _UserDashBoardState extends State<UserDashBoard> {
                           ),
                         ),
                         if (leave != null && leave.numberOfDays > 1)
-                          Flexible(
-                            child: Text(
-                              "${DateFormat('MMM d, yyyy').format(leave.startDate)} To ${DateFormat('MMM d, yyyy').format(leave.endDate)}",
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                          Expanded(
+                            child: Container(
+                              child: Text(
+                                  "On ${"${userDataProvider.startDate!} ⚠️"}",
+                                  style: const TextStyle(color: Colors.white)),
                             ),
                           )
                         else
@@ -317,6 +193,7 @@ class _UserDashBoardState extends State<UserDashBoard> {
                 ),
               ),
             ),
+            const SizedBox(height: 4),
             SizedBox(
               height: 200,
               width: double.infinity,
@@ -436,6 +313,7 @@ class _UserDashBoardState extends State<UserDashBoard> {
                 ],
               ),
             ),
+            const SizedBox(height: 10)
           ],
         ),
       ),

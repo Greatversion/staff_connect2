@@ -5,8 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
+
 import 'package:staff_connect/mainUI/leaveApplication.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -20,6 +21,11 @@ class UserDataProvider extends ChangeNotifier {
   String? fileName;
   File? imageFile;
   Leave? leave;
+
+   String? startDate;
+  String? endDate;
+  String? numberOfdays;
+
   Future<void> fetchImageUrl() async {
     final DocumentSnapshot docSnapshot =
         await userCollection.doc(userEmail).get();
@@ -27,6 +33,21 @@ class UserDataProvider extends ChangeNotifier {
       final data = docSnapshot.data() as Map<String, dynamic>;
       downloadUrl = data['photoUrl'];
       print(downloadUrl);
+    }
+    notifyListeners();
+  }
+
+  Future<void> fetchLeaves() async {
+    final DocumentSnapshot docSnapshot = await userCollection
+        .doc(userEmail)
+        .collection("Leaves")
+        .doc('currentLeave')
+        .get();
+    if (docSnapshot.exists) {
+      final data = docSnapshot.data() as Map<String, dynamic>;
+      startDate = data['Start Date'];
+      endDate = data['End Date'];
+      numberOfdays = data['Number of Days'];
     }
     notifyListeners();
   }
@@ -52,8 +73,6 @@ class UserDataProvider extends ChangeNotifier {
     notifyListeners();
     // Notify the listeners of the state change
   }
-
-  
 
   String name = 'Not Set';
   String email = 'Not Set';
@@ -156,7 +175,7 @@ class TextInput extends StatelessWidget {
   final String labelText;
   final Function(String) onChanged;
 
-  TextInput({
+  const TextInput({
     Key? key,
     required this.validator,
     required this.controller,
@@ -184,6 +203,58 @@ class TextInput extends StatelessWidget {
         ),
         validator: validator,
         onChanged: onChanged,
+      ),
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class CustomCard extends StatelessWidget {
+  String rating;
+  String unDone;
+   CustomCard({
+    Key? key,
+    required this.rating,
+    required this.unDone,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 15,
+      shape: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+      color: Colors.redAccent,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Row(children: [
+              Text(
+                rating,
+                style: GoogleFonts.kadwa(
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              )
+            ]),
+          ),
+          Row(
+            children: [
+              Checkbox(
+                  activeColor: Colors.black,
+                  value: true,
+                  onChanged: (value) {}),
+               Flexible(
+                child: Text(
+                  unDone,
+                  softWrap: true,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              )
+            ],
+          ),
+        ],
       ),
     );
   }

@@ -1,9 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../utilities/ReUsable_Functions.dart';
 
 import 'package:table_calendar/table_calendar.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final FirebaseFirestore store = FirebaseFirestore.instance;
+final CollectionReference userCollection = store.collection('users');
+final CollectionReference leaveCollection = store.collection('Leave Requests');
 
 class Leave {
   final int numberOfDays;
@@ -19,6 +27,7 @@ class Leave {
 
 class TableRangeExample extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _TableRangeExampleState createState() => _TableRangeExampleState();
 }
 
@@ -52,18 +61,11 @@ class _TableRangeExampleState extends State<TableRangeExample> {
         startDate: adjustedRangeStart,
         endDate: rangeEnd);
   }
-sendLeaveRequest() async {
-    await userCollection.doc(userEmail).set({
-      'Start Date':
-          DateFormat('MMM d, yyyy').format(leave!.startDate).toString(),
-      'End Date': DateFormat('MMM d, yyyy').format(leave!.endDate).toString(),
-      'Number of Days': leave!.numberOfDays.toString()
-    }, SetOptions(merge: true));
-  }
+
   @override
   Widget build(BuildContext context) {
     LeaveProvider leaveProvider = Provider.of<LeaveProvider>(context);
-
+    String? currentRegUser = _auth.currentUser!.email;
     // Retrieve the leave from the provider
     final leave = leaveProvider.leave;
 
@@ -162,9 +164,6 @@ sendLeaveRequest() async {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                       IconButton(onPressed:(){
-                        
-                       }, icon:const Icon(Icons.add_alert_outlined)),
                       const Text(
                         'Last Leave Requested',
                         style: TextStyle(
@@ -194,6 +193,35 @@ sendLeaveRequest() async {
                   ),
                 ),
               ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: ElevatedButton(
+                onPressed: () async {
+                  await userCollection
+                      .doc(currentRegUser)
+                      .collection("Leaves")
+                      .doc("currentLeave")
+                      .set({
+                    'Start Date': DateFormat('MMM d, yyyy')
+                        .format(leave!.startDate)
+                        .toString(),
+                    'End Date': DateFormat('MMM d, yyyy')
+                        .format(leave.endDate)
+                        .toString(),
+                    'Number of Days': leave.numberOfDays.toString()
+                  }).then((value) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Sending Leave Request to the HR...")));
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                    textStyle: GoogleFonts.kanit(fontSize: 14),
+                    // shape: const StadiumBorder(),
+                    backgroundColor: Colors.red),
+                child: const Text("Send Request"),
+              ),
+            ),
+            const SizedBox(height: 10)
           ],
         ),
       ),
