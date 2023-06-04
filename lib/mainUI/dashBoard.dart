@@ -1,7 +1,8 @@
+// ignore: file_names
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,7 +16,6 @@ import 'package:staff_connect/mainUI/tasksAssigned.dart';
 import 'package:staff_connect/mainUI/userDashboard.dart';
 import 'package:staff_connect/mainUI/userInfo.dart';
 import 'package:staff_connect/utilities/ReUsable_Functions.dart';
-import 'package:staff_connect/utilities/bottomNavigationBar.dart';
 
 import 'package:staff_connect/utilities/fadeAnimation.dart';
 
@@ -33,22 +33,47 @@ class DashBoard extends StatefulWidget {
 
 class _DashBoardState extends State<DashBoard> {
   final GlobalKey<ScaffoldState> drawerKey = GlobalKey<ScaffoldState>();
+  PageController _pageController = PageController();
   late String userEmail;
   String? downloadUrl;
   String? fileName;
   File? imageFile;
-  int _selectedIndex = 0; // Track the selected index
+  int _currentIndex = 0; // Track the selected index
   String? currentRegUser = _auth.currentUser!.email;
 
   @override
   void initState() {
     super.initState();
-
+    _pageController = PageController(initialPage: _currentIndex);
     UserDataProvider userDataProvider =
         Provider.of<UserDataProvider>(context, listen: false);
     userDataProvider.userEmail = _auth.currentUser!.email!;
     userDataProvider.fetchImageUrl();
     userDataProvider.getUserFormDataFromFirebaseDataBase();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _pageController.dispose();
+  }
+
+  void _onNavItemTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+      _pageController.animateToPage(
+        index,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOutBack,
+      );
+    });
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 
   Future<void> signOut() async {
@@ -63,29 +88,21 @@ class _DashBoardState extends State<DashBoard> {
     });
   }
 
-  void _onIndexChanged(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     UserDataProvider userDataProvider = Provider.of<UserDataProvider>(context);
 
     // whole widget rebuilds without listen:false
-    List<String> titleList = [
+    final List<String> titleList = [
       "User DashBoard",
       "My Tasks 📝",
-      "Apply for Application 🗒️",
+      "Apply For Leave 🗒️",
       "Edit Your Profile 👤"
     ];
     final List<Widget> widgetOptions = <Widget>[
       const UserDashBoard(),
       const TasksAssigned(),
-      // const LeaveApplication(),
       TableRangeExample(),
-      // const SettingsPage(),
       const UserInformation(),
     ];
 
@@ -101,15 +118,15 @@ class _DashBoardState extends State<DashBoard> {
                 }));
               },
               icon: const Icon(Icons.notifications_active_rounded)),
-          _selectedIndex == 0
-              ? IconButton(
-                  onPressed: () {
-                    _selectedIndex == 0 ? signOut() : null;
-                  },
-                  icon: const Icon(Icons.logout_rounded))
-              : const Text("")
+          // _currentIndex == 0
+          //     ? IconButton(
+          //         onPressed: () {
+          //           _currentIndex == 0 ? signOut() : null;
+          //         },
+          //         icon: const Icon(Icons.logout_rounded))
+          //     : const Text("")
         ],
-        leading: _selectedIndex == 0
+        leading: _currentIndex == 0
             ? IconButton(
                 onPressed: () {
                   drawerKey.currentState!.openDrawer();
@@ -121,14 +138,17 @@ class _DashBoardState extends State<DashBoard> {
         backgroundColor: const Color(0xFF212B66),
         automaticallyImplyLeading: false,
         title: Text(
-          titleList[_selectedIndex],
+          titleList[_currentIndex],
           style: GoogleFonts.kanit(fontSize: 21),
         ),
       ),
-      body: widgetOptions
-          .elementAt(_selectedIndex), // Update the body based on selected index
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: _onPageChanged,
+        children: widgetOptions,
+      ), // Update the body based on selected index
       drawer: SafeArea(
-        child: _selectedIndex == 0
+        child: _currentIndex == 0
             ? Drawer(
                 backgroundColor: const Color(0xFFFE9F02),
                 width: res.size.width * 0.7,
@@ -182,6 +202,10 @@ class _DashBoardState extends State<DashBoard> {
                         shrinkWrap: true,
                         children: [
                           ListTile(
+                              titleAlignment: ListTileTitleAlignment.center,
+                              leading: const Icon(
+                                  CupertinoIcons.profile_circled,
+                                  color: Colors.black),
                               title: const Text(
                                 "Employee Name :",
                                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -192,6 +216,9 @@ class _DashBoardState extends State<DashBoard> {
                                     fontWeight: FontWeight.bold),
                               )),
                           ListTile(
+                              titleAlignment: ListTileTitleAlignment.center,
+                              leading: const Icon(Icons.verified_user_rounded,
+                                  color: Colors.black),
                               title: const Text(
                                 "Designation :",
                                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -202,6 +229,9 @@ class _DashBoardState extends State<DashBoard> {
                                     fontWeight: FontWeight.bold),
                               )),
                           ListTile(
+                              titleAlignment: ListTileTitleAlignment.center,
+                              leading: const Icon(Icons.leaderboard,
+                                  color: Colors.black),
                               title: const Text(
                                 "Current Position :",
                                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -212,6 +242,10 @@ class _DashBoardState extends State<DashBoard> {
                                     fontWeight: FontWeight.bold),
                               )),
                           ListTile(
+                              titleAlignment: ListTileTitleAlignment.center,
+                              leading: const Icon(
+                                  Icons.supervisor_account_rounded,
+                                  color: Colors.black),
                               title: const Text(
                                 "Department :",
                                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -222,6 +256,9 @@ class _DashBoardState extends State<DashBoard> {
                                     fontWeight: FontWeight.bold),
                               )),
                           ListTile(
+                              titleAlignment: ListTileTitleAlignment.center,
+                              leading: const Icon(Icons.pages_rounded,
+                                  color: Colors.black),
                               title: const Text(
                                 "Skills :",
                                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -233,6 +270,9 @@ class _DashBoardState extends State<DashBoard> {
                               )),
                           const Text(" _____________________________________"),
                           ListTile(
+                              titleAlignment: ListTileTitleAlignment.center,
+                              leading: const Icon(Icons.phone_android,
+                                  color: Colors.black),
                               title: const Text(
                                 "Contact Number :",
                                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -243,6 +283,9 @@ class _DashBoardState extends State<DashBoard> {
                                     fontWeight: FontWeight.bold),
                               )),
                           ListTile(
+                              titleAlignment: ListTileTitleAlignment.center,
+                              leading: const Icon(Icons.business_center_rounded,
+                                  color: Colors.black),
                               title: const Text(
                                 "Billing Address :",
                                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -251,7 +294,24 @@ class _DashBoardState extends State<DashBoard> {
                                 userDataProvider.address,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold),
-                              ))
+                              )),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextButton(
+                                  onPressed: () {},
+                                  child: const Text(
+                                    "   Log Out",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  )),
+                              const Text(
+                                "Version 1.00.00 - ",
+                                style: TextStyle(color: Colors.black54),
+                              )
+                            ],
+                          ),
                         ],
                       ),
                     )
@@ -260,8 +320,72 @@ class _DashBoardState extends State<DashBoard> {
               )
             : const Text(""),
       ),
-      bottomNavigationBar: CustomNavigationBar(
-        onIndexChanged: _onIndexChanged, // Pass the callback function
+      bottomNavigationBar: BottomNavigationBar(
+        // unselectedIconTheme: ,
+        selectedItemColor: Colors.red,
+        unselectedFontSize: 12,
+        showUnselectedLabels: true,
+        selectedLabelStyle: GoogleFonts.kanit(
+            fontWeight: FontWeight.w500, fontSize: 15, color: Colors.red),
+        unselectedLabelStyle: GoogleFonts.kanit(color: Colors.black),
+
+        // type: BottomNavigationBarType.shifting,
+        backgroundColor: const Color(0xFF212B66),
+        currentIndex: _currentIndex,
+        onTap: _onNavItemTapped,
+        items: const [
+          BottomNavigationBarItem(
+            activeIcon: Icon(
+              CupertinoIcons.home,
+              color: Colors.red,
+            ),
+            backgroundColor: Color(0xFF060C2D),
+            // backgroundColor: Colors.black,
+            icon: Icon(
+              Icons.home,
+              size: 20,
+              color: Color(0xFFFE9F02),
+            ),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            activeIcon: Icon(
+              Icons.task_alt_rounded,
+              color: Colors.red,
+            ),
+            backgroundColor: Color(0xFF060C2D),
+            icon: Icon(
+              size: 20,
+              Icons.task_alt_rounded,
+              color: Color(0xFFFE9F02),
+            ),
+            label: 'Tasks',
+          ),
+          BottomNavigationBarItem(
+              activeIcon: Icon(
+                CupertinoIcons.calendar_badge_plus,
+                color: Colors.red,
+              ),
+              backgroundColor: Color(0xFF060C2D),
+              icon: Icon(
+                size: 20,
+                CupertinoIcons.calendar_badge_plus,
+                color: Color(0xFFFE9F02),
+              ),
+              label: 'Leaves'),
+          BottomNavigationBarItem(
+              activeIcon: Icon(
+                CupertinoIcons.profile_circled,
+                color: Colors.red,
+              ),
+              backgroundColor: Color(0xFF060C2D),
+              icon: Icon(
+                size: 20,
+                CupertinoIcons.profile_circled,
+                color: Color(0xFFFE9F02),
+              ),
+              label: 'Profile'),
+        ],
       ),
     );
   }

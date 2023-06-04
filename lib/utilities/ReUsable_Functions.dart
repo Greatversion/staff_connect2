@@ -22,7 +22,7 @@ class UserDataProvider extends ChangeNotifier {
   File? imageFile;
   Leave? leave;
 
-   String? startDate;
+  String? startDate;
   String? endDate;
   String? numberOfdays;
 
@@ -68,7 +68,7 @@ class UserDataProvider extends ChangeNotifier {
     await userCollection.doc(userEmail).set({
       'email': userEmail,
       'photoUrl': downloadUrl,
-    });
+    }, SetOptions(merge: true));
 
     notifyListeners();
     // Notify the listeners of the state change
@@ -209,29 +209,39 @@ class TextInput extends StatelessWidget {
 }
 
 // ignore: must_be_immutable
-class CustomCard extends StatelessWidget {
+class CustomCard extends StatefulWidget {
   String rating;
   String unDone;
-   CustomCard({
+  String star;
+  CustomCard({
     Key? key,
     required this.rating,
     required this.unDone,
+    required this.star,
   }) : super(key: key);
 
+  @override
+  State<CustomCard> createState() => _CustomCardState();
+}
+
+class _CustomCardState extends State<CustomCard> {
+  bool? isChecked = false;
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 15,
       shape: const OutlineInputBorder(
+          borderSide: BorderSide.none,
           borderRadius: BorderRadius.all(Radius.circular(20))),
-      color: Colors.redAccent,
+      color: const Color(0xF7FE9D02),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding:
+                const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 8),
             child: Row(children: [
               Text(
-                rating,
+                "${widget.rating}/5",
                 style: GoogleFonts.kadwa(
                     fontSize: 50,
                     fontWeight: FontWeight.bold,
@@ -239,15 +249,21 @@ class CustomCard extends StatelessWidget {
               )
             ]),
           ),
+          Text(widget.star),
           Row(
             children: [
               Checkbox(
-                  activeColor: Colors.black,
-                  value: true,
-                  onChanged: (value) {}),
-               Flexible(
+                checkColor: const Color(0xFF212B66),
+                value: isChecked,
+                onChanged: (value) {
+                  setState(() {
+                    isChecked = value ?? false;
+                  });
+                },
+              ),
+              Flexible(
                 child: Text(
-                  unDone,
+                  widget.unDone,
                   softWrap: true,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),

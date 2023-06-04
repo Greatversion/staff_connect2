@@ -165,10 +165,10 @@ class _TableRangeExampleState extends State<TableRangeExample> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Last Leave Requested',
+                        'Current Leave Status :',
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
+                          color: Color(0xFF212B66),
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -176,18 +176,21 @@ class _TableRangeExampleState extends State<TableRangeExample> {
                       Text(
                         'Number of Days: ${leave.numberOfDays}',
                         style: const TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+                            color: Color(0xFF212B66),
+                            fontWeight: FontWeight.w500),
                       ),
-                      const SizedBox(height: 8),
+                      // const SizedBox(height: 8),
                       Text(
                         'Start Date: ${DateFormat('MMM d, yyyy').format(leave.startDate)}',
                         style: const TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+                            color: Color(0xFF212B66),
+                            fontWeight: FontWeight.w500),
                       ),
                       Text(
                         'End Date: ${DateFormat('MMM d, yyyy').format(leave.endDate)}',
                         style: const TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+                            color: Color(0xFF212B66),
+                            fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),

@@ -216,12 +216,11 @@ class _UserInformationState extends State<UserInformation> {
     }, SetOptions(merge: true));
   }
 
-  
   @override
   Widget build(BuildContext context) {
     var res = MediaQuery.of(context);
     UserDataProvider userDataProvider = Provider.of<UserDataProvider>(context);
-  
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -379,7 +378,6 @@ class _UserInformationState extends State<UserInformation> {
                   onPressed: () {
                     if (_formKey2.currentState!.validate()) {
                       sendUserFormDataToFirebaseDataBase();
-                   
 
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text("Thanks for the Information..")));
