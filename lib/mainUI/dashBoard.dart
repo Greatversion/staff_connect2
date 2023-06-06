@@ -299,7 +299,9 @@ class _DashBoardState extends State<DashBoard> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    signOut();
+                                  },
                                   child: const Text(
                                     "   Log Out",
                                     style: TextStyle(

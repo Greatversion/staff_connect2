@@ -1,5 +1,5 @@
 // ignore_for_file: unnecessary_this
-
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -54,9 +54,9 @@ class _OnbordingDataState extends State<OnbordingData> {
                 title,
                 softWrap: true,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: GoogleFonts.kanit(
                     fontWeight: FontWeight.w500,
-                    fontSize: 25,
+                    fontSize: 36,
                     color: Colors.white),
               ),
             ),
@@ -70,10 +70,10 @@ class _OnbordingDataState extends State<OnbordingData> {
               desc,
               softWrap: true,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: GoogleFonts.kanit(
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
-                  fontSize: 13),
+                  fontSize: 17),
             ),
           ),
         ],

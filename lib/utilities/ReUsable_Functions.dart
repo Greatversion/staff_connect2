@@ -1,9 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
 import 'dart:io';
-
+import 'dart:math';
+import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -157,6 +160,97 @@ class UserDataProvider extends ChangeNotifier {
     selectedSkillType = value;
     notifyListeners();
   }
+
+  int generateRandomNumberExperince() {
+    Random random = Random();
+    int min = 0;
+    int max = 10;
+    return min + random.nextInt(max - min);
+  }
+
+  int generateRandomNumbern_client() {
+    Random random = Random();
+    int min = 1;
+    int max = 100;
+    return min + random.nextInt(max - min);
+  }
+
+  int generateRandomNumbernTestScore() {
+    Random random = Random();
+    int min = 10;
+    int max = 100;
+    return min + random.nextInt(max - min);
+  }
+
+  int generateRandomNumbernEquity() {
+    Random random = Random();
+    int min = 1;
+    int max = 10;
+    return min + random.nextInt(max - min);
+  }
+
+  int generateRandomNumbernAttendance() {
+    Random random = Random();
+    int min = 0;
+    int max = 99;
+    return min + random.nextInt(max - min);
+  }
+
+  int predictedSalary = 0000000;
+  getSalary() async {
+    final url = Uri.parse('http://salarypredictor.pythonanywhere.com/predict');
+
+    // Create the request body
+    final requestBody = jsonEncode({
+      "job_role": selectedSkill,
+      "attendance": 75,
+      // "attendance": generateRandomNumbernAttendance(),
+      "department": selectedDepartment,
+      "post": selectedPost,
+      "equity": 2,
+      // "equity": generateRandomNumbernEquity(),
+      "experience": 2,
+      // "experience": generateRandomNumberExperince(),
+      "n_clients": 20,
+      // "n_clients": generateRandomNumbern_client(),
+      "test_scores": 50,
+      // "test_scores": generateRandomNumbernTestScore(),
+      "skills": []
+    });
+
+    // Set the request headers
+    final headers = <String, String>{
+      'Content-Type': 'application/json',
+    };
+
+    // Send the POST request
+    final response = await http.post(url, headers: headers, body: requestBody);
+
+    // Handle the response
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+      predictedSalary = responseData["Predicted Salary"] as int;
+
+      // Request successful
+      if (kDebugMode) {
+        print('POST request successful');
+      }
+      if (kDebugMode) {
+        print(response.body);
+      }
+    } else {
+      // Request failed
+      if (kDebugMode) {
+        print('POST request failed');
+      }
+      if (kDebugMode) {
+        print('Status code: ${response.statusCode}');
+      }
+      if (kDebugMode) {
+        print('Response body: ${response.body}');
+      }
+    }
+  }
 }
 
 class LeaveProvider extends ChangeNotifier {
@@ -272,6 +366,34 @@ class _CustomCardState extends State<CustomCard> {
           ),
         ],
       ),
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class SalaryCard extends StatefulWidget {
+  String title;
+  double salary;
+  SalaryCard({
+    Key? key,
+    required this.title,
+    required this.salary,
+  }) : super(key: key);
+
+  @override
+  State<SalaryCard> createState() => _SalaryCardState();
+}
+
+class _SalaryCardState extends State<SalaryCard> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        Text(widget.title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        Text("₹ ${widget.salary.toStringAsFixed(2)}",
+            style: const TextStyle(fontWeight: FontWeight.bold)),
+      ]),
     );
   }
 }

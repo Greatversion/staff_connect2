@@ -182,6 +182,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formFieldKey.currentState!.validate()) {
+                        
                         emailSignIn();
                       }
                     },

@@ -80,6 +80,7 @@ class _UserDashBoardState extends State<UserDashBoard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         "Hey !  ${_auth.currentUser!.email!.replaceFirst('.dev@sconnect.in', '').toUpperCase()}",

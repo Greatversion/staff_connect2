@@ -5,10 +5,12 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'package:staff_connect/login_servics/login_check.dart';
 
 import 'package:staff_connect/login_servics/login_screen.dart';
 import 'package:staff_connect/mainUI/dashBoard.dart';
+
 
 import 'package:staff_connect/onBoardingScreen/introScreen.dart';
 import 'package:staff_connect/utilities/notification_Services.dart';
@@ -66,25 +68,25 @@ final List<OnbordingData> list = [
   OnbordingData(
     color: Colors.indigo,
     imagePath: "assets/4.png",
-    title: "etyew",
-    desc: "dfbhhtbrtsntrtrhtrhtjntrj",
+    title: "Manage Tasks",
+    desc: "Assign the work directly to the employees",
   ),
   OnbordingData(
     color: Colors.redAccent,
     imagePath: "assets/3.png",
-    title: "445ed",
-    desc: "fegrgrgrgrgrgg",
+    title: "Get in touch",
+    desc: "Collaborate with your Collegues with Square",
   ),
   OnbordingData(
     color: Colors.brown,
     imagePath: "assets/2.png",
-    title: "dtuy",
-    desc: "fegrgrgrgrgrgg.",
+    title: "Salary Management",
+    desc: "Manage your Leaves and Salaries",
   ),
   OnbordingData(
     color: Colors.green,
     imagePath: "assets/5.png",
-    title: "E6ebat",
-    desc: "fegrgrgrgrgrggbasete.",
+    title: "Buisness Growth",
+    desc: "Give Boost to your Buisness with Staff Connect",
   )
 ];

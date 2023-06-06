@@ -33,8 +33,6 @@ class _LoginCheckState extends State<LoginCheck> {
     checkCurrentUser(context);
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     var responsive = MediaQuery.of(context);
@@ -52,17 +50,17 @@ class _LoginCheckState extends State<LoginCheck> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               AnimatedContainer(
-                  curve: Curves.fastOutSlowIn,
+                  curve: Curves.bounceInOut,
                   duration: const Duration(seconds: 3),
                   child: Image.asset("assets/5.png")),
-              const SizedBox(height: 12),
+          
               Container(
-                margin: const EdgeInsets.only(top: 60),
-                height: 50,
-                child: Image.asset("assets/2.png"),
+                margin: const EdgeInsets.only(left: 18),
+                height: 55,
+                child: Image.asset("assets/text-1685168846506.png"),
               ),
               const SizedBox(height: 35),
-              const SpinKitCircle(color: Colors.white, size: 50),
+              const SpinKitCircle(color: Colors.white, size: 58),
             ],
           )),
     );
