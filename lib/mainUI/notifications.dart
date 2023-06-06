@@ -20,7 +20,7 @@ class _NotificationPageState extends State<NotificationPage> {
     UserDataProvider userDataProvider =
         Provider.of<UserDataProvider>(context, listen: false);
     userDataProvider.getSalary();
-    sendSalaryData();
+    // sendSalaryData();
   }
 
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -124,7 +124,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                     salary: userDataProvider.predictedSalary *
                                         0.088),
                                 SalaryCard(
-                                    title: "Internet Reimbursement Allowance",
+                                    title: "Internet Allowance",
                                     salary: userDataProvider.predictedSalary *
                                         0.05),
                                 SalaryCard(

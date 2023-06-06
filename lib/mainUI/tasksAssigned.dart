@@ -31,7 +31,7 @@ class _TasksAssignedState extends State<TasksAssigned> {
 
   @override
   Widget build(BuildContext context) {
-    UserDataProvider userDataProvider = Provider.of<UserDataProvider>(context);
+
     return Container(
       child: Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -40,11 +40,11 @@ class _TasksAssignedState extends State<TasksAssigned> {
             style: GoogleFonts.kanit(fontSize: 30),
           ),
           const Icon(CupertinoIcons.asterisk_circle_fill),
-          ElevatedButton(
-              onPressed: () {
-                userDataProvider.getSalary();
-              },
-              child: Text("ee"))
+          // ElevatedButton(
+          //     onPressed: () {
+          //       userDataProvider.getSalary();
+          //     },
+          //     child: Text("ee"))
         ]),
       ),
     );

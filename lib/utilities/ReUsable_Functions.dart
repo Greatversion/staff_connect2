@@ -389,11 +389,15 @@ class _SalaryCardState extends State<SalaryCard> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Text(widget.title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        Text("₹ ${widget.salary.toStringAsFixed(2)}",
-            style: const TextStyle(fontWeight: FontWeight.bold)),
-      ]),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(widget.title,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text("₹ ${widget.salary.toStringAsFixed(2)}",
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+        ],
+      ),
     );
   }
 }
