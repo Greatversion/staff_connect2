@@ -21,8 +21,8 @@ The app typically includes features such as:
 
 Overall, Staff Connect aims to improve internal communication, foster teamwork, and streamline information sharing within an organization. By providing a centralized platform accessible to all staff members, it enhances productivity, engagement, and collaboration among employees.
 
-![photo_8_2024-05-27_23-59-23](https://github.com/Greatversion/staff_connect2/assets/105535211/cab25c56-52ed-4ec6-88ef-96f39deb24fb)
+<img src="https://github.com/Greatversion/staff_connect2/assets/105535211/cab25c56-52ed-4ec6-88ef-96f39deb24fb" width="200" />
+<img src="https://github.com/Greatversion/staff_connect2/assets/105535211/7fa78422-a003-408f-bcc8-213880f2aa65" width="200" />
+<img src="https://github.com/Greatversion/staff_connect2/assets/105535211/4ea9a833-a4a9-4391-a36f-d5f652109668" width="200" />
+<img src="https://github.com/Greatversion/staff_connect2/assets/105535211/d5ba7d79-9d34-4479-8700-5c6d9209df40" width="200" />
 
-![photo_7_2024-05-27_23-59-23](https://github.com/Greatversion/staff_connect2/assets/105535211/7fa78422-a003-408f-bcc8-213880f2aa65)
-![photo_4_2024-05-27_23-59-23](https://github.com/Greatversion/staff_connect2/assets/105535211/4ea9a833-a4a9-4391-a36f-d5f652109668)
-![photo_1_2024-05-27_23-59-23](https://github.com/Greatversion/staff_connect2/assets/105535211/d5ba7d79-9d34-4479-8700-5c6d9209df40)
